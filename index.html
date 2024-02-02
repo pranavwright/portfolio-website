@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pranav's Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="mediaqueries.css" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+  </head>
+  <body class="dark-theme">
+    <nav id="desktop-nav">
+      <div class="logo">Pranav Wright</div>
+      <div>
+   
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li>      
+            <i class="uil uil-sun theme" id="theme"></i>
+ <!--           <i class="uil uil-sun"></i>-->
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+    <nav id="hamburger-nav">
+      <div class="logo">Pranav Wright</div>
+      <span></span>
+      <i class="uil uil-sun  theme" id="theme-ham"></i>
+ <!--     <i class="uil uil-sun"></i>-->
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu-links">
+          <li><a href="#about" onclick="toggleMenu()">About</a></li>
+          <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
+          <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
+          <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+        </div>
+        
+      </div>
+    </nav>
+    <div class="space"></div>
+    <section id="profile">
+      <div class="section__pic-container">
+        <div class="section-pic-background">
+            <img src="assets/pranav_pic-removebg-preview.png" alt="Pranav Picture">
+        </div>
+      </div>
+      <div class="section__text">
+        <p class="section__text__p1">Hello, I'm</p>
+        <h1 class="title">Parnav P S</h1>
+        <p class="section__text__p2"><a class="typewrite" data-period="2000" data-type='[ "Web Developer", "Front-End Dev", "CyberSecurity","Ethical Hacker","Artist" ]'>
+          <span class="wrap"></span>
+        </a></p>
+        <div class="btn-container">
+          <button
+            class="btn btn-color-2"
+            onclick="window.open('./assets/pranav.pdf')"
+          >
+            Download CV
+          </button>
+          <button class="btn btn-color-1" onclick="location.href='./#contact'">
+            Contact Info
+          </button>
+        </div>
+        <div id="socials-container">
+            <a href="https://linkedin.com/in/Pranav-wright"><i class="uil uil-linkedin-alt icons"></i></a>
+            <a href="https://github.com/pranavwright"><i class="uil uil-github icons"></i></a>
+            <a href="https://g.dev/pranav-ps"><i class="uil uil-google icons"></i></a>
+            <a href="https://instagram.com/pranav_wright_"><i class="uil uil-instagram icons"></i></a>
+            <a href="https://x.com/pranav_wright"><img class="icon-x" src="./assets/logo-white.png" id="x" alt=""></a>
+        </div>
+      </div>
+    </section>
+    <section id="about">
+      <p class="section__text__p1">Get To Know More</p>
+      <h1 class="title">About Me</h1>
+      <div class="section-container">
+        <div class="section__pic-container">
+          <img
+            src="./assets/profile-3.jpg"
+            alt="Profile picture"
+            class="about-pic"
+          />
+        </div>
+        <div class="about-details-container">
+          <div class="about-containers">
+            <div class="details-container">
+              <i class="uil uil-award icons"></i>
+              <h3>Experience</h3>
+              <p>Early Career <br />(0 -5 year)</p>
+            </div>
+            <div class="details-container">
+              <i class="uil uil-book-medical icons"></i>
+              <h3>Education</h3>
+              <p>Bachelor of Computer Science<br />2nd Year(appearing)</p>
+            </div>
+          </div>
+          <div class="text-container">
+            <p>
+              <ul>
+                <li>Developed and implemented several games, and chatbot as part
+                    of the college exhibition program, resulting in the college
+                    receiving an accreditation of A+ in the NAAC cycle</li>
+                <li>Conducted thorough testing and debugging for the programs
+                    developed</li>
+                <li>Has build a solid foundation on basic cybersecurity</li>
+                <li>Has a good grasp over Kali Linux</li>
+                <li>Efficiently uses a wide variety of programming languages with a
+                    special focus on Java,C and C++</li>
+                <li>Knows front end coding using CSS, HTML and Java script
+                </li>
+              </ol>
+            </p>
+          </div>
+        </div>
+      </div>
+      <i class="uil uil-angle-double-down arrow" onclick="location.href='./#experience'"></i>
+    </section>
+    <section id="experience">
+      <p class="section__text__p1">Explore My</p>
+      <h1 class="title">Experience</h1>
+      <div class="experience-details-container">
+        <div class="about-containers">
+          <div class="details-container">
+            <h2 class="experience-sub-title">Frontend Development</h2>
+            <div class="article-container">
+              <article>
+                <i class="uil uil-check-circle icons"></i>
+                <div>
+                  <h3>HTML</h3>
+                  <p>Experienced</p>
+                </div>
+              </article>
+              <article>
+                <i class="uil uil-check-circle icons"></i>
+                <div>
+                  <h3>CSS</h3>
+                  <p>Beginer</p>
+                </div>
+              </article>
+              <article>
+                <i class="uil uil-check-circle icons"></i>
+                <div>
+                  <h3>JavaScript</h3>
+                  <p>Basic</p>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="details-container">
+            <h2 class="experience-sub-title">CyberSecurity</h2>
+            <div class="article-container">
+              <article>
+                <i class="uil uil-check-circle icons"></i>
+                <div>
+                  <h3>MetaSploitable</h3>
+                  <p>Basic</p>
+                </div>
+              </article>
+              <article>
+                <i class="uil uil-check-circle icons"></i>
+                <div>
+                  <h3>Nmap</h3>
+                  <p>Intermediate</p>
+                </div>
+              </article>
+              <article>
+                <i class="uil uil-check-circle icons"></i>
+                <div>
+                  <h3>Linux</h3>
+                  <p>Intermediate</p>
+                </div>
+              </article>
+              <article>
+                <i class="uil uil-check-circle icons"></i>
+                <div>
+                  <h3>WireShark</h3>
+                  <p>Intermediate</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+      <i class="uil uil-angle-double-down arrow" onclick="location.href='./#projects'"></i>
+    </section>
+    <section id="projects">
+      <p class="section__text__p1">Browse My Recent</p>
+      <h1 class="title">Projects</h1>
+      <div class="experience-details-container">
+        <div class="about-containers">
+          <div class="details-container color-container">
+            <div class="article-container">
+              <img
+                src="./assets/project-1.png"
+                alt="Project 1"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">Personal Portfolio</h2>
+            <div class="btn-container">
+              <button
+                class="btn btn-color-2 project-btn"
+                onclick="location.href='https://github.com/'"
+              >
+                Github
+              </button>
+              <button
+                class="btn btn-color-2 project-btn"
+                onclick="location.href='https://github.com/'"
+              >
+                Live Demo
+              </button>
+            </div>
+          </div>
+          <div class="details-container color-container">
+            <div class="article-container">
+              <img
+                src="./assets/project-2.png"
+                alt="Project 2"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">Project Two</h2>
+            <div class="btn-container">
+              <button
+                class="btn btn-color-2 project-btn"
+                onclick="location.href='https://github.com/'"
+              >
+                Github
+              </button>
+              <button
+                class="btn btn-color-2 project-btn"
+                onclick="location.href='https://github.com/'"
+              >
+                Live Demo
+              </button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <i class="uil uil-angle-double-down arrow" onclick="location.href='./#contact'"></i>
+    </section>
+    <section id="contact">
+      <p class="section__text__p1">Get in Touch</p>
+      <h1 class="title">Contact Me</h1>
+      <div class="contact-info-upper-container">
+        <div class="contact-info-container">
+          
+          <i class="uil uil-envelope-check icons"></i>
+          <p><a href="mailto:wightpranav@gmail.com">wrightpranav@gmail.com</a></p>
+          <br>
+        </div>
+        <div class="contact-info-container">
+          
+            <i class="uil uil-linkedin icons"></i>
+          <p><a href="https://linkedin.com/in/Pranav-wright">LinkedIn</a></p>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <nav>
+        <div class="nav-links-container">
+          <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+      <p>Copyright &#169; 2023 Pranav Wright. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
