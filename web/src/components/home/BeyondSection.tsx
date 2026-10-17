@@ -75,7 +75,7 @@ export function BeyondSection() {
       aria-labelledby="beyond-title"
       className="px-5 py-[clamp(5rem,14vh,10rem)] md:px-10"
     >
-      <div className="grid gap-12 md:grid-cols-12 md:items-center md:gap-8">
+      <div className="max-w-7xl mx-auto grid gap-12 md:grid-cols-12 md:items-center md:gap-8">
         <figure className="beyond-photo relative overflow-hidden rounded-[20px] aspect-[4/3] md:col-span-5 md:w-full shadow-2xl">
           <Image
             src="/achivements/presentation-KSDMA.jpg"

@@ -101,29 +101,31 @@ export function SiteFooter({
       </div>
 
       {/* Subfooter Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-border bg-background/85 px-5 py-5 text-[15px] backdrop-blur-md md:px-10">
-        <p className="text-muted-foreground">© {new Date().getFullYear()} {name}</p>
-        <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <Link href="/work" className="text-muted-foreground hover:text-foreground transition-colors">
-            Work
-          </Link>
-          <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
-            About
-          </Link>
-          <Link href="/resume" className="text-muted-foreground hover:text-foreground transition-colors">
-            Resume
-          </Link>
-          <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-            Contact
-          </Link>
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Back to top <ArrowUp aria-hidden="true" className="size-4" strokeWidth={1.75} />
-          </button>
-        </nav>
+      <div className="border-t border-border bg-background/85 backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-5 py-5 text-[15px] md:px-10">
+          <p className="text-muted-foreground">© {new Date().getFullYear()} {name}</p>
+          <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Link href="/work" className="text-muted-foreground hover:text-foreground transition-colors">
+              Work
+            </Link>
+            <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+              About
+            </Link>
+            <Link href="/resume" className="text-muted-foreground hover:text-foreground transition-colors">
+              Resume
+            </Link>
+            <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
+              Contact
+            </Link>
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Back to top <ArrowUp aria-hidden="true" className="size-4" strokeWidth={1.75} />
+            </button>
+          </nav>
+        </div>
       </div>
     </footer>
   )

@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Mail, MapPin, ArrowUpRight, Clock, ShieldCheck } from 'lucide-react'
+import { Mail, MapPin, Clock, ArrowUpRight } from 'lucide-react'
 import { ContactForm } from '@/components/contact/ContactForm'
 import { getSiteSettings } from '@/sanity/fetch'
 
@@ -26,67 +26,77 @@ export default async function ContactPage() {
 
   return (
     <div className="pt-[calc(var(--header-height)+clamp(2rem,8vh,5rem))] pb-[clamp(5rem,14vh,10rem)]">
-      <div className="px-5 md:px-10 max-w-7xl mx-auto space-y-16">
+      <div className="max-w-7xl mx-auto">
         {/* Editorial Page Header */}
-        <div className="max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
-            <span className="size-2 rounded-full bg-primary animate-pulse" />
-            <span>Open for collaboration</span>
-          </div>
-          <h1 className="display text-[clamp(3.5rem,9.5vw,8rem)] leading-[0.86] text-foreground">
-            Let’s build something enduring.
-          </h1>
-          <p className="text-base sm:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-            Have a complex engineering challenge, an ambitious product to launch, or want to explore collaboration? Send a note below or reach out directly.
-          </p>
+      <section className="px-5 md:px-10">
+        <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary mb-6">
+          <span className="size-2 rounded-full bg-primary animate-pulse" />
+          <span>Open for collaboration</span>
         </div>
+        <h1 className="display max-w-[14ch] text-[clamp(3.5rem,9.5vw,8rem)] leading-[0.86] text-foreground">
+          Let's build something enduring.
+        </h1>
+        <p className="mt-8 max-w-[48ch] text-[clamp(1.2rem,1.7vw,1.6rem)] leading-snug text-muted-foreground">
+          Have a complex engineering challenge, an ambitious product to launch, or want to explore collaboration? Send a note below or reach out directly.
+        </p>
+      </section>
 
-        {/* 2-Column Split: Details & Form */}
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 items-start">
+      {/* 2-Column Split: Details & Form */}
+      <section className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+        <div className="grid gap-12 md:grid-cols-12 md:gap-8 items-start">
           {/* Left Column: Direct Reach & Channels */}
-          <div className="lg:col-span-5 space-y-10">
+          <div className="md:col-span-4 space-y-10">
             <div className="space-y-6">
-              <h2 className="text-xl font-bold tracking-tight text-foreground border-b border-border pb-4">
+              <h2 className="text-[clamp(1.6rem,2.4vw,2.2rem)] font-bold leading-tight tracking-[-0.025em] [font-stretch:108%] text-foreground">
                 Direct Channels
               </h2>
 
-              <div className="space-y-5">
+              <div className="space-y-0">
+                {/* Email Row */}
                 <a
                   href={`mailto:${email}`}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-border bg-card hover:border-primary/50 transition-colors"
+                  className="group grid gap-4 border-t border-border py-6 md:py-8 transition-colors hover:border-primary/40"
                 >
-                  <div className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <Mail className="size-5" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-muted-foreground">Direct Email</p>
-                    <p className="text-base font-semibold text-foreground group-hover:text-primary transition-colors">
-                      {email}
-                    </p>
+                  <div className="flex items-start gap-4">
+                    <div className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <Mail className="size-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Direct Email</p>
+                      <p className="text-[17px] font-semibold text-foreground group-hover:text-primary transition-colors mt-1">
+                        {email}
+                      </p>
+                    </div>
                   </div>
                 </a>
 
-                <div className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card">
-                  <div className="size-10 rounded-full bg-muted text-foreground flex items-center justify-center shrink-0">
-                    <MapPin className="size-5" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-muted-foreground">Location &amp; Timezone</p>
-                    <p className="text-base font-semibold text-foreground">
-                      Kerala, India · IST (UTC+5:30)
-                    </p>
+                {/* Location Row */}
+                <div className="grid gap-4 border-t border-border py-6 md:py-8">
+                  <div className="flex items-start gap-4">
+                    <div className="size-10 rounded-full bg-muted text-foreground flex items-center justify-center shrink-0">
+                      <MapPin className="size-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Location &amp; Timezone</p>
+                      <p className="text-[17px] font-semibold text-foreground mt-1">
+                        Kerala, India · IST (UTC+5:30)
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card">
-                  <div className="size-10 rounded-full bg-muted text-foreground flex items-center justify-center shrink-0">
-                    <Clock className="size-5" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-muted-foreground">Response Expectation</p>
-                    <p className="text-base font-semibold text-foreground">
-                      Replies typically within 24 hours
-                    </p>
+                {/* Response Row */}
+                <div className="grid gap-4 border-t border-border py-6 md:py-8">
+                  <div className="flex items-start gap-4">
+                    <div className="size-10 rounded-full bg-muted text-foreground flex items-center justify-center shrink-0">
+                      <Clock className="size-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Response Expectation</p>
+                      <p className="text-[17px] font-semibold text-foreground mt-1">
+                        Replies typically within 24 hours
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -94,20 +104,20 @@ export default async function ContactPage() {
 
             {/* Social Network Profiles */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Profiles &amp; Code
               </h3>
-              <div className="flex flex-wrap gap-2.5">
+              <div className="flex flex-wrap gap-2">
                 {profiles.map((p) => (
                   <a
                     key={p.label}
                     href={p.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:border-primary/50 hover:text-primary transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border px-3.5 py-1.5 text-[14px] font-medium text-foreground hover:border-primary/50 hover:text-primary transition-colors"
                   >
                     {p.label}
-                    <ArrowUpRight className="size-3.5 opacity-70" />
+                    <ArrowUpRight aria-hidden="true" className="size-3.5 opacity-70" />
                   </a>
                 ))}
               </div>
@@ -115,10 +125,11 @@ export default async function ContactPage() {
           </div>
 
           {/* Right Column: Interactive Form */}
-          <div className="lg:col-span-7">
+          <div className="md:col-span-7 md:col-start-6">
             <ContactForm recipientEmail={email} />
           </div>
         </div>
+      </section>
       </div>
     </div>
   )

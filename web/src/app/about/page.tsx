@@ -44,7 +44,8 @@ export default async function AboutPage() {
 
   return (
     <div className="pt-[calc(var(--header-height)+clamp(2rem,8vh,5rem))] pb-[clamp(5rem,14vh,10rem)]">
-      {/* Editorial Opening */}
+      <div className="max-w-7xl mx-auto">
+        {/* Editorial Opening */}
       <section className="grid gap-12 px-5 md:grid-cols-12 md:gap-8 md:px-10">
         <div className="flex flex-col justify-end md:col-span-7">
           <h1 className="display max-w-[12ch] text-[clamp(3.25rem,7.6vw,7.5rem)] leading-[0.86] text-foreground">
@@ -159,6 +160,7 @@ export default async function AboutPage() {
           </Link>
         </div>
       </section>
+      </div>
     </div>
   )
 }

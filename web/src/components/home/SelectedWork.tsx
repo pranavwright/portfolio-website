@@ -319,7 +319,7 @@ export function SelectedWork({
       <div className="chapter-stack relative flow-root">
         {/* Aperture Iris Veil */}
         <div className="work-veil bg-background">
-          <div className="work-veil-content flex min-h-[70svh] sm:min-h-[80svh] flex-col items-center justify-center px-5 text-center md:min-h-[100svh]">
+          <div className="work-veil-content mx-auto w-full max-w-7xl flex min-h-[70svh] sm:min-h-[80svh] flex-col items-center justify-center px-5 text-center md:min-h-[100svh]">
             <h2
               id="selected-work-title"
               className="display-wide text-[clamp(2.8rem,13vw,16rem)] leading-[0.85]"
@@ -359,7 +359,7 @@ export function SelectedWork({
               aria-labelledby={`chapter-${project.id}`}
               data-index={index}
             >
-              <div className="relative flex min-h-[auto] py-10 sm:py-14 md:min-h-[100svh] md:py-0 flex-col px-5 sm:px-8 pb-8 pt-[calc(var(--header-height)+1.5rem)] md:px-10 md:pb-10 md:pt-[calc(var(--header-height)+2.5rem)]">
+              <div className="mx-auto w-full max-w-7xl relative flex min-h-[auto] py-10 sm:py-14 md:min-h-[100svh] md:py-0 flex-col px-5 sm:px-8 pb-8 pt-[calc(var(--header-height)+1.5rem)] md:px-10 md:pb-10 md:pt-[calc(var(--header-height)+2.5rem)]">
                 <div className="relative z-10 flex flex-1 flex-col md:w-[48%] lg:w-[46%] justify-between">
                   <div>
                     <h3

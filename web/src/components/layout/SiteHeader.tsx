@@ -63,7 +63,7 @@ export function SiteHeader({
   return (
     <>
       <header className="site-header fixed inset-x-0 top-0 z-50 border-b border-border bg-background/85 text-foreground backdrop-blur-xl transition-[background-color,border-color,color] duration-500">
-        <div className="flex h-[var(--header-height)] items-center justify-between gap-4 px-5 md:px-10">
+        <div className="mx-auto flex h-[var(--header-height)] max-w-7xl items-center justify-between gap-4 px-5 md:px-10">
           {/* Brand Logo */}
           <Link
             href="/"

@@ -121,7 +121,7 @@ export function ExperienceSection({
       aria-labelledby="experience-title"
       className="overflow-hidden py-[clamp(6rem,16vh,11rem)]"
     >
-      <div className="grid gap-10 px-5 md:grid-cols-12 md:px-10">
+      <div className="max-w-7xl mx-auto grid gap-10 px-5 md:grid-cols-12 md:px-10">
         <div className="md:col-span-4">
           <h2 id="experience-title" className="display text-[clamp(2.75rem,5.4vw,5.5rem)]">
             Experience

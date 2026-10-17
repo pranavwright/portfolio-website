@@ -242,31 +242,33 @@ export function HeroSequence() {
 
           {/* Hero Lead Text & CTAs */}
           <div className="cover-copy pointer-events-none relative z-40 flex h-full flex-col justify-end px-5 pt-[calc(var(--header-height)+1.25rem)] text-[#f4f4f1] md:px-10 md:pb-10">
-            <div className="hero-lead pointer-events-auto md:w-[28rem]">
-              <div className="hero-fade">
-                <p className="mb-4 text-[15px] font-semibold md:text-base">
-                  Full-stack developer &amp; product builder{' '}
-                  <span className="inline-block rounded-full bg-primary/20 px-2.5 py-0.5 text-xs text-primary font-bold">
-                    Kerala, IN
-                  </span>
-                </p>
-                <p className="text-lg leading-snug md:text-[1.35rem]">
-                  I architect scalable web systems, craft tactile user interfaces, and build fast with
-                  modern frameworks.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    href="#selected-work"
-                    className="inline-flex h-12 items-center gap-2 rounded-full bg-[#f4f4f1] px-6 text-[15px] font-semibold text-[#111315] transition-transform active:scale-[0.97] hover:bg-white"
-                  >
-                    View work <ArrowDown aria-hidden="true" className="size-4" strokeWidth={2} />
-                  </Link>
-                  <Link
-                    href="/resume"
-                    className="inline-flex h-12 items-center gap-2 rounded-full border border-[#f4f4f1]/60 px-6 text-[15px] font-semibold backdrop-blur-sm transition-colors hover:bg-[#f4f4f1]/12 active:scale-[0.97]"
-                  >
-                    Resume <ArrowUpRight aria-hidden="true" className="size-4" strokeWidth={2} />
-                  </Link>
+            <div className="mx-auto w-full max-w-7xl">
+              <div className="hero-lead pointer-events-auto md:w-[28rem]">
+                <div className="hero-fade">
+                  <p className="mb-4 text-[15px] font-semibold md:text-base">
+                    Full-stack developer &amp; product builder{' '}
+                    <span className="inline-block rounded-full bg-primary/20 px-2.5 py-0.5 text-xs text-primary font-bold">
+                      Kerala, IN
+                    </span>
+                  </p>
+                  <p className="text-lg leading-snug md:text-[1.35rem]">
+                    I architect scalable web systems, craft tactile user interfaces, and build fast with
+                    modern frameworks.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <Link
+                      href="#selected-work"
+                      className="inline-flex h-12 items-center gap-2 rounded-full bg-[#f4f4f1] px-6 text-[15px] font-semibold text-[#111315] transition-transform active:scale-[0.97] hover:bg-white"
+                    >
+                      View work <ArrowDown aria-hidden="true" className="size-4" strokeWidth={2} />
+                    </Link>
+                    <Link
+                      href="/resume"
+                      className="inline-flex h-12 items-center gap-2 rounded-full border border-[#f4f4f1]/60 px-6 text-[15px] font-semibold backdrop-blur-sm transition-colors hover:bg-[#f4f4f1]/12 active:scale-[0.97]"
+                    >
+                      Resume <ArrowUpRight aria-hidden="true" className="size-4" strokeWidth={2} />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

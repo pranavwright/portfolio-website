@@ -12,6 +12,7 @@ import {
   CheckCircle,
   HelpCircle,
   ShieldCheck,
+  ArrowUpRight,
 } from 'lucide-react'
 import {getProjectBySlug, getProjectSlugs} from '@/sanity/fetch'
 import {StatusBadge} from '@/components/ui/StatusBadge'
@@ -78,208 +79,231 @@ export default async function ProjectDetailPage({params}: ProjectPageProps) {
     '/project/project-1.png'
 
   return (
-    <article className="pt-28 pb-32">
-      <div className="max-w-4xl mx-auto px-6 space-y-16">
+    <article className="pt-[calc(var(--header-height)+clamp(2rem,8vh,5rem))] pb-[clamp(5rem,14vh,10rem)]">
+      <div className="max-w-7xl mx-auto">
         {/* Back Link */}
-        <div>
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-primary transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to all projects</span>
-          </Link>
+      <section className="px-5 md:px-10">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
+        >
+          <ArrowLeft aria-hidden="true" className="size-4" strokeWidth={2} />
+          <span>Back to all projects</span>
+        </Link>
+      </section>
+
+      {/* Project Header */}
+      <header className="px-5 pt-[clamp(2rem,4vh,3rem)] md:px-10">
+        <div className="flex flex-wrap items-center gap-3 mb-6">
+          <StatusBadge status={project.status} />
+          {project.category && (
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground capitalize">
+              {project.category.replace('-', ' ')}
+            </span>
+          )}
+          {project.startDate && (
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <Calendar aria-hidden="true" className="size-4" />
+              <span>
+                {formatDate(project.startDate)}
+                {project.endDate ? ` — ${formatDate(project.endDate)}` : ' — Present'}
+              </span>
+            </span>
+          )}
         </div>
 
-        {/* Project Header */}
-        <header className="space-y-6">
-          <div className="flex flex-wrap items-center gap-3">
-            <StatusBadge status={project.status} />
-            {project.category && (
-              <span className="text-xs font-mono text-muted-foreground capitalize">
-                {project.category.replace('-', ' ')}
-              </span>
-            )}
-            {project.startDate && (
-              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
-                <Calendar className="w-3.5 h-3.5" />
-                <span>
-                  {formatDate(project.startDate)}
-                  {project.endDate ? ` — ${formatDate(project.endDate)}` : ' — Present'}
-                </span>
-              </span>
-            )}
-          </div>
+        <h1 className="display text-[clamp(3.25rem,7.6vw,7.5rem)] leading-[0.86] text-foreground">
+          {project.title}
+        </h1>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.05] uppercase">
-            {project.title}
-          </h1>
+        <p className="mt-8 max-w-[48ch] text-[clamp(1.2rem,1.7vw,1.6rem)] leading-snug text-muted-foreground">
+          {project.summary}
+        </p>
+      </header>
 
-          <p className="text-base sm:text-xl text-muted-foreground leading-relaxed">
-            {project.summary}
-          </p>
+      {/* Quick Meta Row */}
+      <section className="px-5 pt-[clamp(3rem,6vh,5rem)] md:px-10">
+        <div className="grid gap-4 border-t border-border py-10 md:grid-cols-12 md:gap-8">
+          {project.role && (
+            <div className="md:col-span-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Role</p>
+              <p className="text-[17px] font-semibold text-foreground mt-2">
+                {project.role}
+              </p>
+            </div>
+          )}
+          {project.status && (
+            <div className="md:col-span-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</p>
+              <p className="text-[17px] font-semibold text-foreground mt-2 capitalize">
+                {project.status}
+              </p>
+            </div>
+          )}
+          {project.liveUrl && (
+            <div className="md:col-span-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Deployment</p>
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-[17px] font-semibold text-primary hover:opacity-85 transition-opacity mt-2"
+              >
+                <span>Live Preview</span>
+                <ExternalLink aria-hidden="true" className="size-4" />
+              </a>
+            </div>
+          )}
+          {project.repositoryUrl && (
+            <div className="md:col-span-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Code</p>
+              <a
+                href={project.repositoryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-[17px] font-semibold text-muted-foreground hover:text-foreground mt-2 transition-colors"
+              >
+                <Github aria-hidden="true" className="size-4" />
+                <span>Repository</span>
+              </a>
+            </div>
+          )}
+        </div>
+      </section>
 
-          {/* Quick Meta Row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 rounded-xl bg-card border border-border shadow-sm">
-            {project.role && (
-              <div>
-                <span className="block text-[11px] font-mono uppercase text-muted-foreground">Role</span>
-                <span className="text-xs sm:text-sm font-medium text-foreground mt-1 block">
-                  {project.role}
-                </span>
-              </div>
-            )}
-            {project.status && (
-              <div>
-                <span className="block text-[11px] font-mono uppercase text-muted-foreground">Status</span>
-                <span className="text-xs sm:text-sm font-medium text-foreground mt-1 block capitalize">
-                  {project.status}
-                </span>
-              </div>
-            )}
-            {project.liveUrl && (
-              <div>
-                <span className="block text-[11px] font-mono uppercase text-muted-foreground">Deployment</span>
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-primary hover:underline mt-1"
-                >
-                  <span>Live Preview</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-            )}
-            {project.repositoryUrl && (
-              <div>
-                <span className="block text-[11px] font-mono uppercase text-muted-foreground">Code</span>
-                <a
-                  href={project.repositoryUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground mt-1 transition-colors"
-                >
-                  <Github className="w-3 h-3" />
-                  <span>Repository</span>
-                </a>
-              </div>
-            )}
-          </div>
-        </header>
-
-        {/* Featured Cover Image */}
-        {featuredImageUrl && (
-          <div className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-card border border-border shadow-2xl">
+      {/* Featured Cover Image */}
+      {featuredImageUrl && (
+        <section className="px-5 md:px-10">
+          <figure className="relative aspect-[16/9] overflow-hidden rounded-[20px] shadow-2xl">
             <Image
               src={featuredImageUrl}
               alt={project.featuredImage?.alt || project.title}
               fill
-              sizes="(max-width: 1024px) 100vw, 896px"
+              sizes="(max-width: 1024px) 100vw, 100vw"
               priority
               className="object-cover"
             />
-          </div>
-        )}
+          </figure>
+        </section>
+      )}
 
-        {/* Problem & Solution Comparison */}
-        {(project.problem || project.solution) && (
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Problem & Solution Comparison */}
+      {(project.problem || project.solution) && (
+        <section className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <div className="grid gap-8 md:grid-cols-12">
             {project.problem && (
-              <div className="p-6 rounded-xl bg-card border border-border space-y-3 shadow-sm">
-                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-amber-500 font-semibold">
-                  <HelpCircle className="w-4 h-4" />
+              <div className="md:col-span-6 grid gap-4 border-t border-border py-10">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-500">
+                  <HelpCircle aria-hidden="true" className="size-4" />
                   <span>The Real-World Problem</span>
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-[17px] text-muted-foreground leading-relaxed max-w-[48ch]">
                   {project.problem}
                 </p>
               </div>
             )}
 
             {project.solution && (
-              <div className="p-6 rounded-xl bg-card border border-border space-y-3 shadow-sm">
-                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-primary font-semibold">
-                  <ShieldCheck className="w-4 h-4" />
+              <div className="md:col-span-6 grid gap-4 border-t border-border py-10">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
+                  <ShieldCheck aria-hidden="true" className="size-4" />
                   <span>The Engineered Solution</span>
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-[17px] text-muted-foreground leading-relaxed max-w-[48ch]">
                   {project.solution}
                 </p>
               </div>
             )}
-          </section>
-        )}
+          </div>
+        </section>
+      )}
 
-        {/* Key Features */}
-        {project.features && project.features.length > 0 && (
-          <section className="space-y-6">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground border-b border-border pb-3">
-              Core Capabilities &amp; Features
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {project.features.map((feat, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-lg bg-card/80 border border-border flex items-start gap-3"
-                >
-                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    {feat}
-                  </span>
+      {/* Key Features */}
+      {project.features && project.features.length > 0 && (
+        <section aria-labelledby="features-title" className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <h2 id="features-title" className="display text-[clamp(2.75rem,5.4vw,5.5rem)] text-foreground">
+            Core Capabilities
+          </h2>
+          <div className="mt-10 space-y-0">
+            {project.features.map((feat, idx) => (
+              <div
+                key={idx}
+                className="grid gap-4 border-t border-border py-6 md:grid-cols-12 md:gap-8"
+              >
+                <div className="md:col-span-1 flex items-start">
+                  <CheckCircle aria-hidden="true" className="size-5 text-primary mt-0.5" />
                 </div>
-              ))}
+                <p className="md:col-span-10 text-[17px] text-muted-foreground leading-relaxed max-w-[64ch]">
+                  {feat}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Detailed Portable Text Description */}
+      {project.description && (
+        <section aria-labelledby="overview-title" className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <h2 id="overview-title" className="display text-[clamp(2.75rem,5.4vw,5.5rem)] text-foreground">
+            Overview
+          </h2>
+          <div className="mt-10 grid md:grid-cols-12 md:gap-8">
+            <div className="md:col-span-7 md:col-start-1">
+              <PortableTextRenderer value={project.description} />
             </div>
-          </section>
-        )}
+          </div>
+        </section>
+      )}
 
-        {/* Detailed Portable Text Description */}
-        {project.description && (
-          <section className="space-y-6">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground border-b border-border pb-3">
-              Project Overview
-            </h2>
-            <PortableTextRenderer value={project.description} />
-          </section>
-        )}
+      {/* Technical Architecture */}
+      {project.architecture && (
+        <section aria-labelledby="arch-title" className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <h2 id="arch-title" className="display text-[clamp(2.75rem,5.4vw,5.5rem)] text-foreground">
+            Architecture
+          </h2>
+          <div className="mt-10 grid md:grid-cols-12 md:gap-8">
+            <div className="md:col-span-7 md:col-start-1">
+              <PortableTextRenderer value={project.architecture} />
+            </div>
+          </div>
+        </section>
+      )}
 
-        {/* Technical Architecture */}
-        {project.architecture && (
-          <section className="space-y-6">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground border-b border-border pb-3">
-              Technical Architecture &amp; Decisions
-            </h2>
-            <PortableTextRenderer value={project.architecture} />
-          </section>
-        )}
+      {/* Challenges & Solutions */}
+      {project.technicalChallenges && (
+        <section aria-labelledby="challenges-title" className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <h2 id="challenges-title" className="display text-[clamp(2.75rem,5.4vw,5.5rem)] text-foreground">
+            Challenges
+          </h2>
+          <div className="mt-10 grid md:grid-cols-12 md:gap-8">
+            <div className="md:col-span-7 md:col-start-1">
+              <PortableTextRenderer value={project.technicalChallenges} />
+            </div>
+          </div>
+        </section>
+      )}
 
-        {/* Challenges & Solutions */}
-        {project.technicalChallenges && (
-          <section className="space-y-6">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground border-b border-border pb-3">
-              Engineering Challenges &amp; Solutions
-            </h2>
-            <PortableTextRenderer value={project.technicalChallenges} />
-          </section>
-        )}
-
-        {/* Results & Milestones */}
-        {project.results && (
-          <section className="p-6 rounded-xl bg-card border border-primary/30 space-y-3 shadow-sm">
-            <h3 className="text-sm font-mono uppercase tracking-wider text-primary font-semibold flex items-center gap-2">
-              <Layers className="w-4 h-4" />
+      {/* Results & Milestones */}
+      {project.results && (
+        <section className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <div className="rounded-[28px] border border-primary/30 p-8 md:p-12 bg-card">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary mb-4">
+              <Layers aria-hidden="true" className="size-4" />
               <span>Verified Results &amp; Impact</span>
-            </h3>
-            <p className="text-sm text-foreground leading-relaxed">
+            </div>
+            <p className="text-[clamp(1.2rem,1.7vw,1.6rem)] leading-snug text-foreground max-w-[48ch]">
               {project.results}
             </p>
-          </section>
-        )}
+          </div>
+        </section>
+      )}
 
-        {/* Technology Stack Tags */}
-        {project.technologies && project.technologies.length > 0 && (
-          <section className="space-y-4 pt-4 border-t border-border">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+      {/* Technology Stack Tags */}
+      {project.technologies && project.technologies.length > 0 && (
+        <section aria-label="Technologies used" className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <div className="border-t border-border pt-10">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-6">
               Technologies &amp; Systems Used
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -287,80 +311,93 @@ export default async function ProjectDetailPage({params}: ProjectPageProps) {
                 <TechBadge key={tech} name={tech} />
               ))}
             </div>
-          </section>
-        )}
+          </div>
+        </section>
+      )}
 
-        {/* Gallery */}
-        {project.gallery && project.gallery.length > 0 && (
-          <section className="space-y-6 pt-4 border-t border-border">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              Interface Gallery &amp; Artifacts
+      {/* Gallery */}
+      {project.gallery && project.gallery.length > 0 && (
+        <section aria-labelledby="gallery-title" className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <h2 id="gallery-title" className="display text-[clamp(2.75rem,5.4vw,5.5rem)] text-foreground">
+            Gallery
+          </h2>
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {project.gallery.map((img, idx) => {
+              const url = urlForImage(img)?.width(1000).height(650).url()
+              if (!url) return null
+              return (
+                <figure
+                  key={idx}
+                  className="relative aspect-[16/10] overflow-hidden rounded-[20px] shadow-2xl"
+                >
+                  <Image
+                    src={url}
+                    alt={img.alt || `${project.title} Screenshot ${idx + 1}`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 440px"
+                    className="object-cover"
+                  />
+                </figure>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Bottom CTA */}
+      <section className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+        <div className="rounded-[28px] border border-border p-8 md:p-12 flex flex-col md:flex-row md:items-center justify-between gap-8 bg-card">
+          <div>
+            <h2 className="text-[clamp(1.8rem,3vw,2.5rem)] font-bold text-foreground">
+              Interested in this project?
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {project.gallery.map((img, idx) => {
-                const url = urlForImage(img)?.width(1000).height(650).url()
-                if (!url) return null
-                return (
-                  <div
-                    key={idx}
-                    className="relative aspect-[16/10] rounded-xl overflow-hidden bg-card border border-border shadow-md"
-                  >
-                    <Image
-                      src={url}
-                      alt={img.alt || `${project.title} Screenshot ${idx + 1}`}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 440px"
-                      className="object-cover"
-                    />
-                  </div>
-                )
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* Bottom CTA */}
-        <div className="pt-12 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6">
-          <Link
-            href="/projects"
-            className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors"
-          >
-            ← View all projects
-          </Link>
-
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-primary-foreground bg-primary hover:opacity-90 active:scale-[0.98] transition-all"
-          >
-            <span>Discuss this project</span>
-          </Link>
+            <p className="mt-3 max-w-[40ch] text-[17px] leading-relaxed text-muted-foreground">
+              Let's discuss the architecture, technical decisions, or explore working together.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <Link
+              href="/projects"
+              className="inline-flex h-11 items-center justify-center rounded-full border border-border px-6 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+            >
+              ← All projects
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex h-14 items-center gap-2 rounded-full bg-primary px-8 text-[16px] font-semibold text-primary-foreground transition-transform active:scale-[0.97] shadow-xl hover:opacity-95"
+            >
+              Discuss this project
+              <ArrowUpRight aria-hidden="true" className="size-5" strokeWidth={2} />
+            </Link>
+          </div>
         </div>
-
-        {/* Project JSON-LD Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Article',
-              headline: project.title,
-              description: project.summary,
-              image: featuredImageUrl ? [featuredImageUrl] : [],
-              datePublished: project.startDate,
-              dateModified: project._updatedAt || project.startDate,
-              author: {
-                '@type': 'Person',
-                name: 'Pranav P S',
-                url: 'https://pranavwright.com',
-              },
-              publisher: {
-                '@type': 'Person',
-                name: 'Pranav P S',
-              },
-            }),
-          }}
-        />
+      </section>
       </div>
+
+      {/* Project JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: project.title,
+            description: project.summary,
+            image: featuredImageUrl ? [featuredImageUrl] : [],
+            datePublished: project.startDate,
+            dateModified: project._updatedAt || project.startDate,
+            author: {
+              '@type': 'Person',
+              name: 'Pranav P S',
+              url: 'https://pranavwright.com',
+            },
+            publisher: {
+              '@type': 'Person',
+              name: 'Pranav P S',
+            },
+          }),
+        }}
+      />
     </article>
   )
 }

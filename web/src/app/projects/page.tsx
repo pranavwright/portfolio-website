@@ -15,25 +15,26 @@ export default async function ProjectsPage() {
   const projects = await getAllProjects()
 
   return (
-    <div className="pt-32 pb-24">
-      <div className="max-w-6xl mx-auto px-6 space-y-12">
-        {/* Page Header */}
-        <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-primary">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+    <div className="pt-[calc(var(--header-height)+clamp(2rem,8vh,5rem))] pb-[clamp(5rem,14vh,10rem)]">
+      <div className="max-w-7xl mx-auto">
+        {/* Editorial Page Header */}
+        <section className="px-5 md:px-10">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary mb-6">
+            <span className="size-2 rounded-full bg-primary" />
             <span>Portfolio Archive</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-foreground uppercase leading-[1.05]">
-            Selected Works &amp; <br />
-            <span className="text-primary">Architectures</span>
+          <h1 className="display text-[clamp(4rem,15vw,15rem)] leading-[0.8] text-foreground">
+            Projects
           </h1>
-          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+          <p className="mt-10 max-w-[48ch] text-[clamp(1.2rem,1.7vw,1.6rem)] leading-snug text-muted-foreground">
             Software systems, business applications, and product architectures built to solve concrete real-world challenges.
           </p>
-        </div>
+        </section>
 
         {/* Filter & Projects List */}
-        <ProjectsListClient initialProjects={projects} />
+        <section className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <ProjectsListClient initialProjects={projects} />
+        </section>
       </div>
     </div>
   )

@@ -83,7 +83,8 @@ export default async function WorkPage() {
 
   return (
     <div className="pt-[calc(var(--header-height)+clamp(2rem,8vh,5rem))] pb-[clamp(5rem,14vh,10rem)]">
-      <section className="px-5 pb-[clamp(3rem,8vh,6rem)] md:px-10">
+      <div className="max-w-7xl mx-auto">
+        <section className="px-5 pb-[clamp(3rem,8vh,6rem)] md:px-10">
         <h1 className="display text-[clamp(4.5rem,18vw,18rem)] leading-[0.8] text-foreground">
           Work
         </h1>
@@ -161,6 +162,7 @@ export default async function WorkPage() {
           </li>
         ))}
       </ol>
+      </div>
     </div>
   )
 }

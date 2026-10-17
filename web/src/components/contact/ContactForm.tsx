@@ -1,12 +1,20 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { Send, CheckCircle2, AlertCircle, Loader2, Sparkles, Mail, Copy, Check } from 'lucide-react'
 
 interface ContactFormProps {
   formId?: string
   recipientEmail?: string
 }
+
+const inquiryTopics = [
+  'Full-Stack Engineering',
+  'Systems Architecture',
+  'Product UI & Motion',
+  'Technical Advisory',
+  'General Collaboration',
+]
 
 export function ContactForm({
   formId,
@@ -14,15 +22,44 @@ export function ContactForm({
 }: ContactFormProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [subject, setSubject] = useState('Full-Stack Engineering')
+  const [subject, setSubject] = useState(inquiryTopics[0])
   const [message, setMessage] = useState('')
+  const [copied, setCopied] = useState(false)
+
+  // Validation & status states
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({})
   const [status, setStatus] = useState<'idle' | 'submitting' | 'succeeded' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
   const resolvedFormId = formId || process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID
 
+  const validate = () => {
+    const newErrors: { name?: string; email?: string; message?: string } = {}
+
+    if (!name.trim()) {
+      newErrors.name = 'Please provide your name.'
+    }
+
+    if (!email.trim()) {
+      newErrors.email = 'Please provide your email address.'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      newErrors.email = 'Please enter a valid email address.'
+    }
+
+    if (!message.trim()) {
+      newErrors.message = 'Please provide details about your project or inquiry.'
+    } else if (message.trim().length < 10) {
+      newErrors.message = 'Please share a bit more context (at least 10 characters).'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validate()) return
+
     setStatus('submitting')
     setErrorMessage('')
 
@@ -34,11 +71,16 @@ export function ContactForm({
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
-          body: JSON.stringify({ name, email, subject, message }),
+          body: JSON.stringify({
+            name: name.trim(),
+            email: email.trim(),
+            topic: subject,
+            message: message.trim(),
+          }),
         })
 
         if (!response.ok) {
-          throw new Error('Failed to send message via form service.')
+          throw new Error('Form service returned an error status.')
         }
       } else {
         // Fallback simulation: smooth client acknowledgement
@@ -48,148 +90,294 @@ export function ContactForm({
       setStatus('succeeded')
     } catch (err: any) {
       console.error('Contact submission error:', err)
-      // Even if network or formspree fails, offer direct mailto fallback
       setErrorMessage(
-        'Unable to send message directly. Please click below to send via your email client.'
+        'The automated dispatch service is currently unreachable. You can immediately send this note via your standard email client below.'
       )
       setStatus('error')
     }
   }
 
+  const handleCopyMessage = () => {
+    navigator.clipboard.writeText(
+      `From: ${name} (${email})\nTopic: ${subject}\n\n${message}`
+    )
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  // SUCCESS STATE VIEW
   if (status === 'succeeded') {
     return (
-      <div className="bg-card border border-border rounded-2xl p-8 sm:p-12 text-center space-y-4 shadow-xl animate-in fade-in zoom-in-95 duration-500">
-        <div className="size-16 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center border border-primary/20">
-          <CheckCircle2 className="size-8" strokeWidth={2} />
+      <div className="relative rounded-[28px] border border-border bg-card p-8 sm:p-12 text-center space-y-6 shadow-2xl animate-in fade-in zoom-in-95 duration-500 overflow-hidden">
+        {/* Glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-20 -top-20 size-72 rounded-full bg-primary/10 blur-3xl"
+        />
+
+        <div className="size-20 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center border border-primary/25 shadow-inner">
+          <CheckCircle2 className="size-10" strokeWidth={2} />
         </div>
-        <h3 className="text-2xl font-bold text-foreground">Message Dispatched</h3>
-        <p className="text-muted-foreground text-base max-w-md mx-auto leading-relaxed">
-          Thank you for reaching out, <span className="font-semibold text-foreground">{name}</span>. Your message was received and I will reply within 24 hours.
-        </p>
-        <button
-          type="button"
-          onClick={() => {
-            setName('')
-            setEmail('')
-            setMessage('')
-            setStatus('idle')
-          }}
-          className="mt-6 inline-flex h-11 items-center justify-center rounded-full border border-border px-6 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
-        >
-          Send another note
-        </button>
+
+        <div className="space-y-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+            Transmission Verified
+          </span>
+          <h3 className="display text-[clamp(2rem,4vw,2.75rem)] leading-tight text-foreground">
+            Message Dispatched
+          </h3>
+          <p className="text-muted-foreground text-[16px] sm:text-[17px] max-w-lg mx-auto leading-relaxed pt-2">
+            Thank you, <span className="font-semibold text-foreground">{name}</span>. Your inquiry regarding <span className="font-medium text-foreground">"{subject}"</span> has been queued. I typically respond within 24 hours.
+          </p>
+        </div>
+
+        <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setName('')
+              setEmail('')
+              setMessage('')
+              setErrors({})
+              setStatus('idle')
+            }}
+            className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground shadow-lg hover:opacity-95 active:scale-[0.97] transition-all"
+          >
+            Send another inquiry
+          </button>
+
+          <button
+            type="button"
+            onClick={handleCopyMessage}
+            className="inline-flex h-12 items-center gap-2 rounded-full border border-border bg-card px-5 text-sm font-semibold text-foreground hover:bg-muted active:scale-[0.97] transition-all"
+          >
+            {copied ? (
+              <>
+                <Check className="size-4 text-primary" />
+                <span>Copied note</span>
+              </>
+            ) : (
+              <>
+                <Copy className="size-4 opacity-70" />
+                <span>Copy my note</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
     )
   }
 
+  // ACTIVE FORM VIEW
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 bg-card border border-border p-6 sm:p-10 rounded-2xl shadow-xl transition-all"
+      noValidate
+      className="relative rounded-[28px] border border-border bg-card p-6 sm:p-10 shadow-2xl space-y-8 overflow-hidden transition-all duration-300"
     >
+      {/* Background Accent */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-20 -bottom-20 size-80 rounded-full bg-primary/5 blur-3xl"
+      />
+
+      {/* Header Prompt */}
+      <div className="space-y-2 border-b border-border/60 pb-6">
+        <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
+          <Sparkles className="size-3.5" />
+          <span>Interactive Inquiry</span>
+        </div>
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          Send a detailed briefing
+        </h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Fill out the details below. I review incoming client and collaboration inquiries daily.
+        </p>
+      </div>
+
+      {/* Error Fallback Banner */}
       {status === 'error' && (
-        <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-foreground text-sm flex flex-col gap-2">
-          <div className="flex items-center gap-2 text-destructive font-semibold">
+        <div
+          role="alert"
+          aria-live="polite"
+          className="rounded-2xl border border-destructive/25 bg-destructive/10 p-5 space-y-3 text-foreground animate-in fade-in duration-300"
+        >
+          <div className="flex items-center gap-2 text-destructive font-semibold text-sm">
             <AlertCircle className="size-5 shrink-0" />
-            <span>Delivery Notice</span>
+            <span>Service Notification</span>
           </div>
-          <p className="text-muted-foreground text-xs leading-relaxed">{errorMessage}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            {errorMessage}
+          </p>
           <a
             href={`mailto:${recipientEmail}?subject=${encodeURIComponent(
-              subject
-            )}&body=${encodeURIComponent(`Hi Pranav,\n\nName: ${name}\n\n${message}`)}`}
-            className="inline-flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground self-start mt-1 hover:opacity-95"
+              `[${subject}] Inquiry from ${name || 'Portfolio Contact'}`
+            )}&body=${encodeURIComponent(
+              `Hi Pranav,\n\nName: ${name}\nEmail: ${email}\nTopic: ${subject}\n\n${message}`
+            )}`}
+            className="inline-flex h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-semibold text-primary-foreground hover:opacity-95 shadow-md active:scale-[0.97] transition-all"
           >
-            Send via email client instead
+            <Mail className="size-3.5" />
+            <span>Open in default email client</span>
           </a>
         </div>
       )}
 
-      {/* Name and Email Grid */}
+      {/* 1. Inquiry Topic Selector */}
+      <div className="space-y-3">
+        <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          What is the primary scope?
+        </label>
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Inquiry scope">
+          {inquiryTopics.map((topic) => {
+            const isSelected = subject === topic
+            return (
+              <button
+                key={topic}
+                type="button"
+                role="radio"
+                aria-checked={isSelected}
+                onClick={() => setSubject(topic)}
+                className={`rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 border active:scale-[0.97] ${
+                  isSelected
+                    ? 'bg-foreground text-background border-foreground font-semibold shadow-sm'
+                    : 'bg-background/80 text-muted-foreground border-border hover:border-primary/40 hover:text-foreground'
+                }`}
+              >
+                {topic}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* 2. Name & Email Inputs */}
       <div className="grid gap-6 sm:grid-cols-2">
-        <div>
-          <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+        <div className="space-y-2">
+          <label
+            htmlFor="contact-name"
+            className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+          >
             Your Name <span className="text-primary">*</span>
           </label>
           <input
-            id="name"
+            id="contact-name"
             type="text"
             required
+            autoComplete="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value)
+              if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }))
+            }}
             placeholder="e.g. Alex Morgan"
-            className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground/50 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+            className={`w-full rounded-xl border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 transition-colors focus:outline-none focus:ring-1 focus:ring-primary ${
+              errors.name ? 'border-destructive focus:border-destructive' : 'border-border focus:border-primary'
+            }`}
           />
+          {errors.name && (
+            <p className="text-xs text-destructive flex items-center gap-1 font-medium pt-0.5">
+              <AlertCircle className="size-3" />
+              {errors.name}
+            </p>
+          )}
         </div>
 
-        <div>
-          <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+        <div className="space-y-2">
+          <label
+            htmlFor="contact-email"
+            className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+          >
             Your Email <span className="text-primary">*</span>
           </label>
           <input
-            id="email"
+            id="contact-email"
             type="email"
             required
+            autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }))
+            }}
             placeholder="alex@company.com"
-            className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground/50 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+            className={`w-full rounded-xl border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 transition-colors focus:outline-none focus:ring-1 focus:ring-primary ${
+              errors.email ? 'border-destructive focus:border-destructive' : 'border-border focus:border-primary'
+            }`}
           />
+          {errors.email && (
+            <p className="text-xs text-destructive flex items-center gap-1 font-medium pt-0.5">
+              <AlertCircle className="size-3" />
+              {errors.email}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Inquiry Topic */}
-      <div>
-        <label htmlFor="subject" className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-          Project Scope / Inquiry Type
-        </label>
-        <select
-          id="subject"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
-        >
-          <option value="Full-Stack Engineering">Full-Stack Web Engineering</option>
-          <option value="Systems & Architecture">Systems Architecture & APIs</option>
-          <option value="Performance & Motion">Performance Optimization & UI Craft</option>
-          <option value="Product Consulting">Technical Consulting & Advisory</option>
-          <option value="General Collaboration">General Inquiries & Saying Hello</option>
-        </select>
-      </div>
-
-      {/* Message */}
-      <div>
-        <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-          Message Details <span className="text-primary">*</span>
-        </label>
+      {/* 3. Detailed Message Area */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label
+            htmlFor="contact-message"
+            className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+          >
+            Project Context &amp; Objectives <span className="text-primary">*</span>
+          </label>
+          <span className="text-[11px] font-mono text-muted-foreground tabular">
+            {message.length} chars
+          </span>
+        </div>
         <textarea
-          id="message"
+          id="contact-message"
           required
           rows={5}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Tell me about what you are building, key deadlines, constraints, or the problem you need solved..."
-          className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground/50 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"
+          onChange={(e) => {
+            setMessage(e.target.value)
+            if (errors.message) setErrors((prev) => ({ ...prev, message: undefined }))
+          }}
+          placeholder="Describe what you are looking to build or solve: technical constraints, timeline, team structure, or architecture goals..."
+          className={`w-full rounded-xl border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 transition-colors focus:outline-none focus:ring-1 focus:ring-primary resize-none ${
+            errors.message ? 'border-destructive focus:border-destructive' : 'border-border focus:border-primary'
+          }`}
         />
+        {errors.message ? (
+          <p className="text-xs text-destructive flex items-center gap-1 font-medium pt-0.5">
+            <AlertCircle className="size-3" />
+            {errors.message}
+          </p>
+        ) : (
+          <p className="text-[11px] text-muted-foreground">
+            Direct NDA-compliant inquiry. Your email is never shared.
+          </p>
+        )}
       </div>
 
-      {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={status === 'submitting'}
-        className="w-full sm:w-auto inline-flex h-13 items-center justify-center gap-2 rounded-full bg-primary px-8 text-[15px] font-semibold text-primary-foreground shadow-lg transition-transform active:scale-[0.98] hover:opacity-95 disabled:opacity-50"
-      >
-        {status === 'submitting' ? (
-          <>
-            <Loader2 aria-hidden="true" className="size-4 animate-spin" />
-            Sending message...
-          </>
-        ) : (
-          <>
-            Send message <Send aria-hidden="true" className="size-4" strokeWidth={2} />
-          </>
-        )}
-      </button>
+      {/* 4. Submission Button */}
+      <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <button
+          type="submit"
+          disabled={status === 'submitting'}
+          aria-busy={status === 'submitting'}
+          className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-[16px] font-semibold text-primary-foreground shadow-xl transition-all duration-300 ease-expo active:scale-[0.97] hover:opacity-95 disabled:opacity-50"
+        >
+          {status === 'submitting' ? (
+            <>
+              <Loader2 className="size-5 animate-spin" />
+              <span>Transmitting briefing...</span>
+            </>
+          ) : (
+            <>
+              <span>Send briefing</span>
+              <Send className="size-4" strokeWidth={2} />
+            </>
+          )}
+        </button>
+
+        <p className="text-xs text-muted-foreground font-mono">
+          Avg response time: &lt; 24h
+        </p>
+      </div>
     </form>
   )
 }

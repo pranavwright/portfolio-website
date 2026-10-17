@@ -77,7 +77,8 @@ export default async function ResumePage() {
 
   return (
     <div className="pt-[calc(var(--header-height)+clamp(2rem,8vh,5rem))] pb-[clamp(5rem,14vh,10rem)]">
-      <section className="px-5 md:px-10">
+      <div className="max-w-7xl mx-auto">
+        <section className="px-5 md:px-10">
         <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-8">
           <h1 className="display text-[clamp(4rem,15vw,15rem)] leading-[0.8] text-foreground">
             Resume
@@ -175,6 +176,7 @@ export default async function ResumePage() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   )
 }
