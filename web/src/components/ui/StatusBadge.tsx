@@ -29,18 +29,18 @@ const statusMap: Record<string, {label: string; dotClass: string; bgClass: strin
   },
   'completed': {
     label: 'Completed',
-    dotClass: 'bg-emerald-400',
-    bgClass: 'bg-surface text-text-secondary border-border',
+    dotClass: 'bg-emerald-500',
+    bgClass: 'bg-card text-muted-foreground border-border',
   },
   'paused': {
     label: 'Paused',
     dotClass: 'bg-zinc-500',
-    bgClass: 'bg-surface text-text-muted border-border',
+    bgClass: 'bg-card text-muted-foreground/80 border-border',
   },
   'archived': {
     label: 'Archived',
     dotClass: 'bg-zinc-600',
-    bgClass: 'bg-surface text-text-muted border-border',
+    bgClass: 'bg-card text-muted-foreground/80 border-border',
   },
 }
 

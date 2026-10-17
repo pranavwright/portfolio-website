@@ -1,18 +1,23 @@
 import {MetadataRoute} from 'next'
 import {getProjectSlugs} from '@/sanity/fetch'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600 // Revalidate sitemap every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://pranavwright.com'
-  const projectSlugs = await getProjectSlugs()
+  let projectRoutes: MetadataRoute.Sitemap = []
 
-  const projectRoutes: MetadataRoute.Sitemap = projectSlugs.map((p) => ({
-    url: `${baseUrl}/projects/${p.slug}`,
-    lastModified: p._updatedAt ? new Date(p._updatedAt) : new Date(),
-    changeFrequency: 'monthly',
-    priority: 0.8,
-  }))
+  try {
+    const projectSlugs = await getProjectSlugs()
+    projectRoutes = projectSlugs.map((p) => ({
+      url: `${baseUrl}/projects/${p.slug}`,
+      lastModified: p._updatedAt ? new Date(p._updatedAt) : new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    }))
+  } catch (err) {
+    console.error('Sitemap project slug fetch error:', err)
+  }
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -22,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/projects`,
+      url: `${baseUrl}/work`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
@@ -31,6 +36,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/resume`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/projects`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
       priority: 0.7,
     },
   ]

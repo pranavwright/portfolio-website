@@ -36,8 +36,8 @@ export function ProjectsListClient({initialProjects}: ProjectsListClientProps) {
             className={cn(
               'px-4 py-2 rounded-full text-xs font-mono transition-all duration-200 border',
               activeCategory === cat.id
-                ? 'bg-accent text-background font-semibold border-accent shadow-sm'
-                : 'bg-surface text-text-secondary border-border hover:border-accent-border/60 hover:text-text-primary'
+                ? 'bg-primary text-primary-foreground font-semibold border-primary shadow-sm'
+                : 'bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground'
             )}
           >
             {cat.label}
@@ -47,9 +47,9 @@ export function ProjectsListClient({initialProjects}: ProjectsListClientProps) {
 
       {/* Projects Grid */}
       {filteredProjects.length === 0 ? (
-        <div className="py-20 text-center rounded-2xl bg-surface border border-border space-y-3">
-          <p className="text-text-primary font-medium">No projects in this category yet</p>
-          <p className="text-xs text-text-muted">
+        <div className="py-20 text-center rounded-2xl bg-card border border-border space-y-3">
+          <p className="text-foreground font-medium">No projects in this category yet</p>
+          <p className="text-xs text-muted-foreground">
             Check back soon or select another category above.
           </p>
         </div>

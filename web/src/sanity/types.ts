@@ -11,6 +11,8 @@ export interface SanityImage {
 export interface Project {
   _id: string
   _type: 'project'
+  _createdAt?: string
+  _updatedAt?: string
   title: string
   slug: {
     current: string

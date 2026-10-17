@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -8,6 +9,9 @@ const nextConfig = {
       },
     ],
   },
+  // Ensure compressed responses
+  compress: true,
+  poweredByHeader: false,
 }
 
 export default nextConfig
