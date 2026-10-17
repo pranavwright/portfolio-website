@@ -10,32 +10,32 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#09090b',
+        background: '#0c0d0f',
         surface: {
-          DEFAULT: '#111114',
-          subtle: '#16161a',
-          hover: '#1c1c22',
+          DEFAULT: '#131417',
+          subtle: '#17181c',
+          hover: '#1c1e23',
         },
         border: {
-          DEFAULT: '#222228',
-          subtle: '#1a1a20',
-          focus: '#3f3f4e',
+          DEFAULT: 'rgba(255, 255, 255, 0.08)',
+          subtle: 'rgba(255, 255, 255, 0.04)',
+          focus: 'rgba(255, 255, 255, 0.25)',
         },
         text: {
-          primary: '#f5f3ef',
-          secondary: '#9e9b94',
-          muted: '#66645e',
+          primary: '#f5f5f7',
+          secondary: '#9898a4',
+          muted: '#5c5c66',
         },
         accent: {
-          DEFAULT: '#d4af37',
-          hover: '#e2be4a',
-          muted: 'rgba(212, 175, 55, 0.15)',
-          border: 'rgba(212, 175, 55, 0.3)',
+          DEFAULT: '#bfdb39',
+          hover: '#cbf043',
+          muted: 'rgba(191, 219, 57, 0.14)',
+          border: 'rgba(191, 219, 57, 0.35)',
         },
       },
       fontFamily: {
         sans: [
-          'system-ui',
+          'Inter',
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',
@@ -52,7 +52,19 @@ const config: Config = {
         ],
       },
       animation: {
-        'pulse-subtle': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'marquee': 'marquee 28s linear infinite',
+        'marquee-reverse': 'marquee-reverse 28s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'marquee-reverse': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
       },
     },
   },

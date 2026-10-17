@@ -73,9 +73,9 @@ export default async function AboutPage() {
             <span>Background &amp; Philosophy</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-text-primary leading-[1.1]">
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-text-primary leading-[1.05] uppercase">
             Engineering software. <br />
-            Designing products that work.
+            <span className="text-accent">Designing products</span> that work.
           </h1>
 
           <p className="text-base sm:text-lg text-text-secondary leading-relaxed">

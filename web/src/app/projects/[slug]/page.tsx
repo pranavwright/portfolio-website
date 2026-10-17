@@ -102,7 +102,7 @@ export default async function ProjectDetailPage({params}: ProjectPageProps) {
             )}
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-text-primary leading-[1.1]">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-text-primary leading-[1.05] uppercase">
             {project.title}
           </h1>
 

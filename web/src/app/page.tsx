@@ -1,6 +1,8 @@
 import React from 'react'
 import {HeroSection} from '@/components/home/HeroSection'
+import {MarqueeTicker} from '@/components/home/MarqueeTicker'
 import {FeaturedProjects} from '@/components/home/FeaturedProjects'
+import {PhilosophySection} from '@/components/home/PhilosophySection'
 import {CurrentlyBuilding} from '@/components/home/CurrentlyBuilding'
 import {ContactCta} from '@/components/home/ContactCta'
 import {
@@ -26,9 +28,11 @@ export default async function HomePage() {
     featuredProjects.length > 0 ? featuredProjects : allProjects
 
   return (
-    <div className="space-y-12">
+    <div>
       <HeroSection settings={settings} />
+      <MarqueeTicker />
       <FeaturedProjects projects={displayProjects} />
+      <PhilosophySection />
       <CurrentlyBuilding items={currentlyBuilding} />
       <ContactCta settings={settings} />
     </div>

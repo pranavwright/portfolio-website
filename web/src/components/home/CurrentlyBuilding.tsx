@@ -1,8 +1,10 @@
+'use client'
+
 import React from 'react'
 import {StatusBadge} from '@/components/ui/StatusBadge'
 import {formatDate} from '@/lib/utils'
 import type {CurrentlyBuilding as CurrentlyBuildingType} from '@/sanity/types'
-import {Radio, Layers} from 'lucide-react'
+import {Radio, Layers, ExternalLink} from 'lucide-react'
 
 interface CurrentlyBuildingProps {
   items: CurrentlyBuildingType[]
@@ -12,40 +14,45 @@ export function CurrentlyBuilding({items}: CurrentlyBuildingProps) {
   if (!items || items.length === 0) return null
 
   return (
-    <section id="now" className="py-24 border-t border-border/80">
-      <div className="max-w-6xl mx-auto px-6 space-y-12">
-        {/* Header */}
-        <div className="space-y-3 pb-2 border-b border-border/60">
-          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-accent">
-            <Radio className="w-3.5 h-3.5 animate-pulse text-emerald-400" />
-            <span>Active Engineering</span>
+    <section id="now" className="py-28 border-t border-border">
+      <div className="max-w-7xl mx-auto px-6 space-y-12">
+        {/* Header in Karolina Hess Editorial Style */}
+        <div className="space-y-3 pb-6 border-b border-border">
+          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-accent font-semibold">
+            <Radio className="w-3.5 h-3.5 animate-pulse text-accent" />
+            <span>Active Engineering Log</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-text-primary tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-text-primary tracking-tight uppercase">
             Currently Building
           </h2>
           <p className="text-sm sm:text-base text-text-secondary max-w-xl leading-relaxed">
-            What I am actively shipping, testing, and researching right now — real products in active development.
+            Real products, experiments, and systems actively under engineering, testing, and research.
           </p>
         </div>
 
         {/* Grid of Active Initiatives */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {items.map((item) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {items.map((item, idx) => (
             <div
               key={item._id}
-              className="group relative flex flex-col justify-between rounded-xl bg-surface border border-border p-6 hover:border-accent-border/60 transition-all duration-300 shadow-md"
+              className="group relative flex flex-col justify-between rounded-2xl bg-surface border border-border p-7 hover:border-accent/50 transition-all duration-300 shadow-xl space-y-6"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between gap-2">
-                  <StatusBadge status={item.status} />
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs text-accent font-semibold">
+                      [0{idx + 1}]
+                    </span>
+                    <StatusBadge status={item.status} />
+                  </div>
                   {item.lastUpdated && (
                     <span className="text-[11px] font-mono text-text-muted">
-                      Updated {formatDate(item.lastUpdated)}
+                      {formatDate(item.lastUpdated)}
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-xl font-bold text-text-primary tracking-tight group-hover:text-accent transition-colors">
+                <h3 className="text-xl font-bold text-text-primary tracking-tight uppercase group-hover:text-accent transition-colors">
                   {item.title}
                 </h3>
 
@@ -54,12 +61,25 @@ export function CurrentlyBuilding({items}: CurrentlyBuildingProps) {
                 </p>
               </div>
 
-              {item.focusArea && (
-                <div className="pt-4 mt-6 border-t border-border/70 flex items-center gap-2 text-xs font-mono text-text-muted">
-                  <Layers className="w-3.5 h-3.5 text-accent flex-shrink-0" />
-                  <span className="truncate">Focus: {item.focusArea}</span>
-                </div>
-              )}
+              <div className="pt-4 border-t border-border flex items-center justify-between text-xs font-mono text-text-muted">
+                {item.focusArea && (
+                  <div className="flex items-center gap-2 truncate">
+                    <Layers className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+                    <span className="truncate">{item.focusArea}</span>
+                  </div>
+                )}
+                {item.externalUrl && (
+                  <a
+                    href={item.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-accent hover:underline ml-auto"
+                  >
+                    <span>Inspect</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>

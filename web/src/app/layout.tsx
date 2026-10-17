@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Navigation } from '@/components/layout/Navigation'
 import { Footer } from '@/components/layout/Footer'
+import { CustomCursor } from '@/components/ui/CustomCursor'
 import { getSiteSettings } from '@/sanity/fetch'
 
 export const dynamic = 'force-dynamic'
@@ -57,7 +58,8 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="dark scroll-smooth">
-      <body className="min-h-screen bg-background text-text-primary selection:bg-accent selection:text-background flex flex-col justify-between">
+      <body className="min-h-screen bg-background text-text-primary selection:bg-accent selection:text-background flex flex-col justify-between relative bg-noise">
+        <CustomCursor />
         <Navigation
           name={settings?.name || 'Pranav Wright'}
           githubUrl={settings?.githubUrl || 'https://github.com/pranavwright'}

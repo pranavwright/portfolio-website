@@ -23,8 +23,9 @@ export default async function ProjectsPage() {
             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             <span>Portfolio Archive</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-text-primary">
-            Featured Projects &amp; Products
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-text-primary uppercase leading-[1.05]">
+            Selected Works &amp; <br />
+            <span className="text-accent">Architectures</span>
           </h1>
           <p className="text-base sm:text-lg text-text-secondary leading-relaxed">
             Software systems, business applications, and product architectures built to solve concrete real-world challenges.

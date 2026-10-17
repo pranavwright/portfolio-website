@@ -25,7 +25,7 @@ export function ProjectCard({
 
   if (layout === 'featured') {
     return (
-      <article className="group relative rounded-2xl bg-surface border border-border hover:border-accent-border/60 transition-all duration-300 overflow-hidden shadow-xl">
+      <article className="group relative rounded-2xl bg-surface border border-border hover:border-accent/50 transition-all duration-300 overflow-hidden shadow-xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 sm:p-8 lg:p-10">
           {/* Info */}
           <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
@@ -156,7 +156,7 @@ export function ProjectCard({
 
   // Standard Card Layout
   return (
-    <article className="group relative flex flex-col justify-between rounded-xl bg-surface border border-border hover:border-accent-border/60 transition-all duration-300 p-6 sm:p-7 shadow-lg">
+    <article className="group relative flex flex-col justify-between rounded-xl bg-surface border border-border hover:border-accent/50 transition-all duration-300 p-6 sm:p-7 shadow-lg">
       <div className="space-y-4">
         {/* Header tags */}
         <div className="flex items-center justify-between gap-2">
