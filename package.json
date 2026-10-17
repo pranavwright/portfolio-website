@@ -1,0 +1,13 @@
+{
+  "name": "pranav-portfolio-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev:web": "npm --prefix web run dev",
+    "dev:studio": "npm --prefix studio run dev",
+    "build:web": "npm --prefix web run build",
+    "build:studio": "npm --prefix studio run build",
+    "pages:build": "npm --prefix web run pages:build",
+    "pages:deploy": "npm --prefix web run pages:deploy"
+  }
+}

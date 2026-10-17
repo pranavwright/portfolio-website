@@ -1,0 +1,41 @@
+{
+  "name": "portfolio-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static"
+  },
+  "dependencies": {
+    "@formspree/react": "^2.5.1",
+    "@gsap/react": "^2.1.1",
+    "@portabletext/react": "^3.1.0",
+    "@sanity/client": "^6.22.4",
+    "@sanity/image-url": "^1.1.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.11.9",
+    "gsap": "^3.12.5",
+    "lucide-react": "^0.453.0",
+    "next": "^14.2.24",
+    "next-sanity": "^9.8.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "styled-components": "^6.6.0",
+    "tailwind-merge": "^2.5.4"
+  },
+  "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.5",
+    "@types/node": "^20.17.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3",
+    "wrangler": "^3.83.0"
+  }
+}
