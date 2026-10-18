@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { gsap, useGSAP, cinematic, motionOk } from '@/lib/gsap'
 import { Project as SanityProject } from '@/sanity/types'
+import { urlForImage } from '@/sanity/image'
 
 export interface ProjectData {
   id: string
@@ -168,34 +169,36 @@ export function SelectedWork({
   const projects: ProjectData[] =
     sanityProjects.length > 0
       ? sanityProjects.slice(0, 6).map((sp, idx) => {
-          const palette = projectThemePalettes[idx % projectThemePalettes.length]
-          const def = defaultFeaturedProjects[idx % defaultFeaturedProjects.length]
-          return {
-            id: sp._id,
-            name: sp.title,
-            headline: sp.summary || sp.seoDescription || 'Production engineering project',
-            description: sp.problem || sp.summary || '',
-            role: sp.role || 'Full-Stack Developer',
-            organization: 'Kerala, IN',
-            color: isDark ? palette.dark.color : palette.light.color,
-            ink: isDark ? palette.dark.ink : palette.light.ink,
-            lightColor: palette.light.color,
-            lightInk: palette.light.ink,
-            darkColor: palette.dark.color,
-            darkInk: palette.dark.ink,
-            cover: def?.cover || '/project/project-1.png',
-            metrics: [
-              { label: 'Impact', value: 'Production' },
-              { label: 'Status', value: 'Live' },
-            ],
-            slug: sp.slug?.current || `project-${idx + 1}`,
-          }
-        })
+        const palette = projectThemePalettes[idx % projectThemePalettes.length]
+        const def = defaultFeaturedProjects[idx % defaultFeaturedProjects.length]
+        console.log(sp);
+
+        return {
+          id: sp._id,
+          name: sp.title,
+          headline: sp.summary || sp.seoDescription || 'Production engineering project',
+          description: sp.problem || sp.summary || '',
+          role: sp.role || 'Full-Stack Developer',
+          organization: 'Kerala, IN',
+          color: isDark ? palette.dark.color : palette.light.color,
+          ink: isDark ? palette.dark.ink : palette.light.ink,
+          lightColor: palette.light.color,
+          lightInk: palette.light.ink,
+          darkColor: palette.dark.color,
+          darkInk: palette.dark.ink,
+          cover: urlForImage(sp.featuredImage)?.width(800).height(500).url() || '/project/project-1.png',
+          metrics: [
+            { label: 'Impact', value: 'Production' },
+            { label: 'Status', value: 'Live' },
+          ],
+          slug: sp.slug?.current || `project-${idx + 1}`,
+        }
+      })
       : defaultFeaturedProjects.map((p) => ({
-          ...p,
-          color: isDark ? p.darkColor : p.lightColor,
-          ink: isDark ? p.darkInk : p.lightInk,
-        }))
+        ...p,
+        color: isDark ? p.darkColor : p.lightColor,
+        ink: isDark ? p.darkInk : p.lightInk,
+      }))
 
   useGSAP(
     () => {
@@ -348,9 +351,8 @@ export function SelectedWork({
               aria-hidden="true"
             />
             <article
-              className={`chapter relative overflow-hidden transition-[background-color,color,border-color] duration-500 border-t shadow-[0_-16px_40px_-20px_rgba(0,0,0,0.15)] ${
-                index > 0 ? 'md:rounded-t-[28px]' : ''
-              }`}
+              className={`chapter relative overflow-hidden transition-[background-color,color,border-color] duration-500 border-t shadow-[0_-16px_40px_-20px_rgba(0,0,0,0.15)] ${index > 0 ? 'md:rounded-t-[28px]' : ''
+                }`}
               style={{
                 backgroundColor: isDark ? project.darkColor : project.lightColor,
                 color: isDark ? project.darkInk : project.lightInk,
