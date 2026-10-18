@@ -182,7 +182,7 @@ export function HeroSequence() {
               <div className="hero-image absolute inset-0 z-0">
                 <div className="cover-photo absolute inset-x-0 -top-[14%] h-[124%]">
                   <Image
-                    src="/pranav/hero-bg.jpg"
+                    src="/pranav/hero-bg.webp"
                     alt={SITE.name}
                     fill
                     sizes="100vw"
@@ -216,7 +216,7 @@ export function HeroSequence() {
               <div className="hero-image pointer-events-none absolute inset-0 z-20">
                 <div className="cover-photo absolute inset-x-0 -top-[14%] h-[124%]">
                   <Image
-                    src="/pranav/hero.png"
+                    src="/pranav/hero.webp"
                     alt=""
                     aria-hidden="true"
                     fill

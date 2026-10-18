@@ -3,6 +3,7 @@ import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { LenisProvider } from '@/components/layout/LenisProvider'
+import { LoadingScreen } from '@/components/layout/LoadingScreen'
 import { SITE } from '@/lib/site'
 import { getSkills } from '@/sanity/fetch'
 
@@ -145,6 +146,7 @@ export default async function RootLayout({
         <meta name="ai-content-declaration" content="unconditioned" />
       </head>
       <body className="min-h-screen bg-background text-foreground flex flex-col justify-between relative selection:bg-primary selection:text-primary-foreground font-sans">
+        <LoadingScreen />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-primary text-primary-foreground rounded-full shadow-lg text-sm font-semibold"

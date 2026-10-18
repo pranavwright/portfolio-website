@@ -170,8 +170,6 @@ export function SelectedWork({
     sanityProjects.length > 0
       ? sanityProjects.slice(0, 6).map((sp, idx) => {
         const palette = projectThemePalettes[idx % projectThemePalettes.length]
-        const def = defaultFeaturedProjects[idx % defaultFeaturedProjects.length]
-        console.log(sp);
 
         return {
           id: sp._id,
