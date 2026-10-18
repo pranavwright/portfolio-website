@@ -1,4 +1,4 @@
-import {groq} from 'next-sanity'
+import groq from 'groq'
 
 // Global site settings singleton
 export const siteSettingsQuery = groq`

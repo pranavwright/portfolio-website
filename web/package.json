@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "preview": "npx serve out",
     "start": "next start",
     "lint": "next lint",
-    "pages:build": "npx @cloudflare/next-on-pages",
-    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static"
+    "pages:deploy": "npm run build && wrangler pages deploy out",
+    "deploy": "npm run pages:deploy"
   },
   "dependencies": {
     "@fontsource-variable/caveat": "^5.3.0",
