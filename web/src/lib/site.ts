@@ -8,14 +8,14 @@
  * will automatically update.
  */
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pranavwright.com'
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || ''
 
 export const SITE = {
   // Core Identity
-  name: 'Pranav P S',
+  name: 'Pranav Wright',
   shortName: 'Pranav',
   legalName: 'Pranav P S',
-  alternateNames: ['Pranav Wright', 'pranavwright'],
+  alternateNames: ['Pranav P S', 'Pranav PS', 'pranavwright', 'Pranav Wright (Pranav P S)'],
   role: 'Full-Stack Developer & Product Builder',
   roles: [
     'Software Developer',
@@ -60,22 +60,27 @@ export const SITE = {
     ogImage: '/opengraph-image.png',
     favicon: '/favicon.ico',
     resumePdf: '/pranav.pdf',
-    resumeFileName: 'Pranav_PS_Resume.pdf',
+    resumeFileName: 'Pranav_Wright_Resume.pdf',
   },
 
   // SEO & OpenGraph Defaults
   seo: {
-    title: 'Pranav P S — Full-Stack Developer & Product Builder',
-    titleTemplate: '%s | Pranav P S',
+    title: 'Pranav Wright — Full-Stack Developer & Product Builder',
+    titleTemplate: '%s | Pranav Wright',
     description:
-      'Software developer, full-stack engineer, and product architect from Kerala, India. Building resilient systems, distributed software, and intuitive user experiences.',
+      'Pranav Wright (Pranav P S) is a software developer, full-stack engineer, and product architect from Kerala, India. Building resilient systems, distributed software, and intuitive user experiences.',
     keywords: [
-      'Pranav P S',
       'Pranav Wright',
+      'pranavwright',
+      'Pranav Wright developer',
+      'Pranav Wright portfolio',
+      'Pranav Wright Kerala',
+      'Pranav P S',
+      'Pranav PS',
       'Full-Stack Developer',
       'Software Engineer',
       'Systems Architect',
-      'Next.js 14',
+      'Next.js',
       'React',
       'TypeScript',
       'Node.js',
@@ -85,8 +90,8 @@ export const SITE = {
       'Portfolio',
     ],
     locale: 'en_US',
-    siteName: 'Pranav P S Portfolio',
-    googleVerification: 'iTJSpHmrrm5pwboorqL8Abf2tzkMTTx8WmsEDiBG5CU',
+    siteName: 'Pranav Wright Portfolio',
+    googleVerification: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
   },
 
   // AEO (Answer Engine Optimization) & Semantic Entity Graph
@@ -97,7 +102,7 @@ export const SITE = {
     websiteId: `${baseUrl}/#website`,
     jobTitle: 'Full-Stack Developer & Systems Architect',
     aiSummary:
-      'Pranav P S (also known as Pranav Wright) is a software engineer, full-stack developer, and product builder based in Kerala, India, specializing in Next.js, distributed backends, TypeScript, CRDT-based real-time systems, and high-performance interactive interfaces.',
+      'Pranav Wright (legal name Pranav P S) is a software engineer, full-stack developer, and product builder based in Kerala, India, specializing in Next.js, distributed backends, TypeScript, CRDT-based real-time systems, and high-performance interactive interfaces.',
   },
 } as const
 

@@ -244,7 +244,8 @@ export const project = defineType({
       name: 'publishedAt',
       title: 'Published At',
       type: 'datetime',
-      description: 'Set this date to make the project publicly visible. Leaving empty keeps it as a draft.',
+      initialValue: () => new Date().toISOString(),
+      description: 'Publication timestamp. Defaults to current time when created.',
     }),
     defineField({
       name: 'seoTitle',

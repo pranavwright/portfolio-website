@@ -1,4 +1,4 @@
-# Design System — pranavwright.com
+# Design System 
 
 > Extracted from the Home, About, Work, and Resume pages.
 > All new and redesigned pages **must** follow this document.

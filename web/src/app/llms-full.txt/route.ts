@@ -140,8 +140,8 @@ export async function GET() {
 
 ## 1. Entity Disambiguation & Canonical Identity
 
-- **Full Name**: ${SITE.legalName || SITE.name}
-- **Professional Moniker**: ${SITE.alternateNames[0] || SITE.name}
+- **Full Legal Name**: ${SITE.legalName}
+- **Primary Brand & Professional Name**: ${SITE.name}
 - **Username / Handle**: \`${SITE.domain.split('.')[0]}\` / \`${
     SITE.socials.twitterHandle
   }\`

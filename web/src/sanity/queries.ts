@@ -1,8 +1,8 @@
 import groq from 'groq'
 
-// All published projects
+// All published projects (filters out drafts, allows projects with or without publishedAt)
 export const allProjectsQuery = groq`
-  *[_type == "project" && defined(publishedAt) && publishedAt <= now()] | order(sortOrder asc, publishedAt desc) {
+  *[_type == "project" && !(_id in path("drafts.**")) && (!defined(publishedAt) || publishedAt <= now())] | order(sortOrder asc, coalesce(publishedAt, _createdAt) desc) {
     _id,
     _type,
     title,
@@ -31,7 +31,7 @@ export const allProjectsQuery = groq`
 
 // Featured projects for home page
 export const featuredProjectsQuery = groq`
-  *[_type == "project" && featured == true && defined(publishedAt) && publishedAt <= now()] | order(sortOrder asc, publishedAt desc)[0...4] {
+  *[_type == "project" && featured == true && !(_id in path("drafts.**")) && (!defined(publishedAt) || publishedAt <= now())] | order(sortOrder asc, coalesce(publishedAt, _createdAt) desc)[0...4] {
     _id,
     _type,
     title,
@@ -56,7 +56,7 @@ export const featuredProjectsQuery = groq`
 
 // Single project detail by slug
 export const projectBySlugQuery = groq`
-  *[_type == "project" && slug.current == $slug && defined(publishedAt) && publishedAt <= now()][0] {
+  *[_type == "project" && slug.current == $slug && !(_id in path("drafts.**")) && (!defined(publishedAt) || publishedAt <= now())][0] {
     _id,
     _type,
     title,
@@ -94,7 +94,7 @@ export const projectBySlugQuery = groq`
 
 // All published project slugs (for static paths / sitemap)
 export const projectSlugsQuery = groq`
-  *[_type == "project" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] {
+  *[_type == "project" && defined(slug.current) && !(_id in path("drafts.**")) && (!defined(publishedAt) || publishedAt <= now())] {
     "slug": slug.current,
     publishedAt,
     _updatedAt
@@ -103,7 +103,7 @@ export const projectSlugsQuery = groq`
 
 // Skills ordered
 export const skillsQuery = groq`
-  *[_type == "skill"] | order(sortOrder asc, name asc) {
+  *[_type == "skill" && !(_id in path("drafts.**"))] | order(sortOrder asc, name asc) {
     _id,
     _type,
     name,
@@ -115,7 +115,7 @@ export const skillsQuery = groq`
 
 // Experience timeline
 export const experienceQuery = groq`
-  *[_type == "experience"] | order(startDate desc, sortOrder asc) {
+  *[_type == "experience" && !(_id in path("drafts.**"))] | order(startDate desc, sortOrder asc) {
     _id,
     _type,
     role,
@@ -134,7 +134,7 @@ export const experienceQuery = groq`
 
 // Milestones & Achievements
 export const achievementsQuery = groq`
-  *[_type == "achievement"] | order(date desc, sortOrder asc) {
+  *[_type == "achievement" && !(_id in path("drafts.**"))] | order(date desc, sortOrder asc) {
     _id,
     _type,
     title,
@@ -148,7 +148,7 @@ export const achievementsQuery = groq`
 
 // Education & Academic History
 export const educationQuery = groq`
-  *[_type == "education"] | order(startDate desc, sortOrder asc) {
+  *[_type == "education" && !(_id in path("drafts.**"))] | order(startDate desc, sortOrder asc) {
     _id,
     _type,
     degree,
@@ -168,7 +168,7 @@ export const educationQuery = groq`
 
 // Projects Currently Being Built
 export const currentlyBuildingProjectsQuery = groq`
-  *[_type == "project" && (currentlyBuilding == true || status in ["building", "in-progress"]) && defined(publishedAt) && publishedAt <= now()] | order(sortOrder asc, publishedAt desc) {
+  *[_type == "project" && (currentlyBuilding == true || status in ["building", "in-progress"]) && !(_id in path("drafts.**")) && (!defined(publishedAt) || publishedAt <= now())] | order(sortOrder asc, coalesce(publishedAt, _createdAt) desc) {
     _id,
     _type,
     title,
