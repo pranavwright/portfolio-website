@@ -2,11 +2,15 @@
   "name": "pranav-portfolio-monorepo",
   "private": true,
   "version": "1.0.0",
+  "workspaces": [
+    "web",
+    "studio"
+  ],
   "scripts": {
     "dev:web": "npm --prefix web run dev",
     "dev:studio": "npm --prefix studio run dev",
-    "build:web": "npm --prefix web run build",
-    "build:studio": "npm --prefix studio run build",
+    "build:web": "npm --prefix web install && npm --prefix web run build",
+    "build:studio": "npm --prefix studio install && npm --prefix studio run build",
     "pages:deploy": "npm --prefix web run pages:deploy",
     "deploy:web": "npm --prefix web run pages:deploy",
     "deploy:studio": "npm --prefix studio run deploy"
