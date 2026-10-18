@@ -9,8 +9,8 @@
   "scripts": {
     "dev:web": "npm --prefix web run dev",
     "dev:studio": "npm --prefix studio run dev",
-    "build:web": "npm --prefix web install && npm --prefix web run build",
-    "build:studio": "npm --prefix studio install && npm --prefix studio run build",
+    "build:web": "npm --prefix web install --legacy-peer-deps && npm --prefix web run build && rm -rf out && cp -r web/out out",
+    "build:studio": "npm --prefix studio install --legacy-peer-deps && npm --prefix studio run build",
     "pages:deploy": "npm --prefix web run pages:deploy",
     "deploy:web": "npm --prefix web run pages:deploy",
     "deploy:studio": "npm --prefix studio run deploy"
