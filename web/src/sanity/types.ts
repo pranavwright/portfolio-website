@@ -22,6 +22,8 @@ export interface Project {
   category?: 'web-app' | 'mobile' | 'tool' | 'design' | 'experiment'
   role?: string
   featured?: boolean
+  currentlyBuilding?: boolean
+  focusArea?: string
   featuredImage?: SanityImage
   gallery?: SanityImage[]
   technologies?: string[]
@@ -38,34 +40,6 @@ export interface Project {
   endDate?: string
   sortOrder?: number
   publishedAt?: string
-  seoTitle?: string
-  seoDescription?: string
-}
-
-export interface SiteSettings {
-  _id: string
-  _type: 'siteSettings'
-  name: string
-  alternativeName?: string
-  headline: string
-  roles?: string[]
-  shortBio: string
-  aboutBio?: any[]
-  location?: string
-  avatar?: SanityImage
-  email: string
-  githubUrl?: string
-  linkedinUrl?: string
-  instagramUrl?: string
-  twitterUrl?: string
-  resumePdf?: {
-    asset: {
-      url?: string
-      _ref?: string
-    }
-  }
-  contactHeadline?: string
-  contactSubtext?: string
   seoTitle?: string
   seoDescription?: string
 }
@@ -95,6 +69,23 @@ export interface Experience {
   sortOrder?: number
 }
 
+export interface Education {
+  _id: string
+  _type: 'education'
+  degree: string
+  fieldOfStudy?: string
+  institution: string
+  location?: string
+  startDate: string
+  endDate?: string
+  isCurrent?: boolean
+  grade?: string
+  description?: string
+  activities?: string[]
+  supportingUrl?: string
+  sortOrder?: number
+}
+
 export interface Achievement {
   _id: string
   _type: 'achievement'
@@ -106,14 +97,3 @@ export interface Achievement {
   sortOrder?: number
 }
 
-export interface CurrentlyBuilding {
-  _id: string
-  _type: 'currentlyBuilding'
-  title: string
-  status: 'building' | 'researching' | 'experimenting' | 'completed' | 'paused'
-  description: string
-  focusArea?: string
-  externalUrl?: string
-  lastUpdated?: string
-  sortOrder?: number
-}

@@ -3,41 +3,25 @@ import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { LenisProvider } from '@/components/layout/LenisProvider'
-import { getSiteSettings } from '@/sanity/fetch'
+import { SITE } from '@/lib/site'
+import { getSkills } from '@/sanity/fetch'
 
 export const revalidate = 300 // Revalidate layout every 5 minutes
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings()
-  const title = settings?.seoTitle || 'Pranav P S — Full-Stack Developer & Product Builder'
-  const description =
-    settings?.seoDescription ||
-    'Software developer, full-stack engineer, and product architect from Kerala, India. Building resilient systems, distributed software, and intuitive user experiences.'
+export function generateMetadata(): Metadata {
+  const title = SITE.seo.title
+  const description = SITE.seo.description
 
   return {
     title: {
       default: title,
-      template: '%s | Pranav P S',
+      template: SITE.seo.titleTemplate,
     },
     description,
-    keywords: [
-      'Pranav P S',
-      'Pranav Wright',
-      'Full-Stack Developer',
-      'Software Engineer',
-      'Systems Architect',
-      'Next.js 14',
-      'React',
-      'TypeScript',
-      'Node.js',
-      'Distributed Systems',
-      'CRDTs',
-      'Kerala Developer',
-      'Portfolio',
-    ],
-    authors: [{ name: 'Pranav P S', url: 'https://pranavwright.com' }],
-    creator: 'Pranav P S',
-    metadataBase: new URL('https://pranavwright.com'),
+    keywords: [...SITE.seo.keywords],
+    authors: [{ name: SITE.name, url: SITE.url }],
+    creator: SITE.name,
+    metadataBase: new URL(SITE.url),
     alternates: {
       canonical: '/',
     },
@@ -45,15 +29,15 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      locale: 'en_US',
-      url: 'https://pranavwright.com',
-      siteName: 'Pranav P S Portfolio',
+      locale: SITE.seo.locale,
+      url: SITE.url,
+      siteName: SITE.seo.siteName,
       images: [
         {
-          url: '/opengraph-image.png',
+          url: SITE.logo.ogImage,
           width: 1200,
           height: 630,
-          alt: 'Pranav P S — Full-Stack Developer & Product Builder',
+          alt: `${SITE.name} — ${SITE.headline || SITE.role}`,
         },
       ],
     },
@@ -61,8 +45,8 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title,
       description,
-      creator: '@pranav_wright',
-      images: ['/opengraph-image.png'],
+      creator: SITE.socials.twitterHandle,
+      images: [SITE.logo.ogImage],
     },
     robots: {
       index: true,
@@ -83,11 +67,11 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: [
         { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
       ],
-      shortcut: '/favicon.ico',
+      shortcut: SITE.logo.favicon,
     },
     manifest: '/site.webmanifest',
     verification: {
-      google: 'iTJSpHmrrm5pwboorqL8Abf2tzkMTTx8WmsEDiBG5CU',
+      google: SITE.seo.googleVerification,
     },
   }
 }
@@ -97,57 +81,54 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const settings = await getSiteSettings()
-  const name = settings?.name || 'Pranav P S'
-  const email = settings?.email || process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'pranavwright@gmail.com'
-  const description =
-    settings?.seoDescription ||
-    'Software developer, full-stack engineer, and product architect from Kerala, India.'
+  const sanitySkills = await getSkills()
+  const skillNames = sanitySkills.map((s) => s.name)
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'Person',
-        '@id': 'https://pranavwright.com/#person',
-        name: 'Pranav P S',
-        alternateName: ['Pranav Wright', 'pranavwright'],
-        url: 'https://pranavwright.com',
-        image: 'https://pranavwright.com/pranav/profile-about.jpg',
-        jobTitle: 'Full-Stack Developer & Product Builder',
-        description,
+        '@type': SITE.aeo.personType,
+        '@id': SITE.aeo.entityId,
+        name: SITE.name,
+        legalName: SITE.legalName,
+        alternateName: [...SITE.alternateNames],
+        url: SITE.url,
+        image: `${SITE.url}${SITE.logo.avatar}`,
+        jobTitle: SITE.roles[0] || SITE.aeo.jobTitle,
+        description: SITE.seo.description,
+        disambiguatingDescription: SITE.aeo.aiSummary,
         address: {
           '@type': 'PostalAddress',
-          addressRegion: 'Kerala',
-          addressCountry: 'IN',
+          addressRegion: SITE.location.region,
+          addressCountry: SITE.location.countryCode,
         },
         sameAs: [
-          'https://github.com/pranavwright',
-          'https://linkedin.com/in/Pranav-wright',
-          'https://x.com/pranav_wright',
-          'https://instagram.com/pranav.wright',
+          SITE.socials.github,
+          SITE.socials.linkedin,
+          SITE.socials.twitter,
+          SITE.socials.instagram,
         ],
-        knowsAbout: [
-          'Next.js',
-          'React',
-          'TypeScript',
-          'Node.js',
-          'Distributed Systems',
-          'CRDTs',
-          'PostgreSQL',
-          'Sanity CMS',
-          'Cloudflare',
-          'UI/UX Design',
-        ],
+        knowsAbout: skillNames,
+      },
+      {
+        '@type': 'ProfilePage',
+        '@id': `${SITE.url}/#profilepage`,
+        url: SITE.url,
+        name: `${SITE.name} — Developer Profile`,
+        mainEntity: {
+          '@id': SITE.aeo.entityId,
+        },
       },
       {
         '@type': 'WebSite',
-        '@id': 'https://pranavwright.com/#website',
-        url: 'https://pranavwright.com',
-        name: 'Pranav P S Portfolio',
-        description,
+        '@id': SITE.aeo.websiteId,
+        url: SITE.url,
+        name: `${SITE.name} Portfolio`,
+        description: SITE.seo.description,
+        inLanguage: 'en-US',
         publisher: {
-          '@id': 'https://pranavwright.com/#person',
+          '@id': SITE.aeo.entityId,
         },
       },
     ],
@@ -155,6 +136,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en" data-theme="light">
+      <head>
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM Context (llms.txt)" />
+        <link rel="alternate" type="text/plain" href="/llms-full.txt" title="Full LLM Context (llms-full.txt)" />
+        <meta name="ai-content-declaration" content="unconditioned" />
+      </head>
       <body className="min-h-screen bg-background text-foreground flex flex-col justify-between relative selection:bg-primary selection:text-primary-foreground font-sans">
         <a
           href="#main-content"
@@ -163,17 +149,17 @@ export default async function RootLayout({
           Skip to main content
         </a>
         <LenisProvider>
-          <SiteHeader name={name} email={email} />
+          <SiteHeader name={SITE.name} email={SITE.email} />
           <main id="main-content" className="flex-grow">
             {children}
           </main>
           <SiteFooter
-            name={name}
-            email={email}
-            githubUrl={settings?.githubUrl || 'https://github.com/pranavwright'}
-            linkedinUrl={settings?.linkedinUrl || 'https://linkedin.com/in/Pranav-wright'}
-            instagramUrl={settings?.instagramUrl || 'https://instagram.com/pranav.wright'}
-            twitterUrl={settings?.twitterUrl || 'https://x.com/pranav_wright'}
+            name={SITE.name}
+            email={SITE.email}
+            githubUrl={SITE.socials.github}
+            linkedinUrl={SITE.socials.linkedin}
+            instagramUrl={SITE.socials.instagram}
+            twitterUrl={SITE.socials.twitter}
           />
         </LenisProvider>
         <script

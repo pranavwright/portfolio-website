@@ -2,13 +2,13 @@ import React from 'react'
 import type {Metadata} from 'next'
 import {getAllProjects} from '@/sanity/fetch'
 import {ProjectsListClient} from '@/components/projects/ProjectsListClient'
+import {SITE} from '@/lib/site'
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Work & Projects',
-  description:
-    'Explore featured projects, systems, and product architectures designed and built by Pranav P S.',
+  description: `Explore featured projects, systems, and product architectures designed and built by ${SITE.name}.`,
 }
 
 export default async function ProjectsPage() {

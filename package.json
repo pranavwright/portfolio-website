@@ -8,6 +8,7 @@
     "build:web": "npm --prefix web run build",
     "build:studio": "npm --prefix studio run build",
     "pages:deploy": "npm --prefix web run pages:deploy",
-    "deploy:web": "npm --prefix web run pages:deploy"
+    "deploy:web": "npm --prefix web run pages:deploy",
+    "deploy:studio": "npm --prefix studio run deploy"
   }
 }

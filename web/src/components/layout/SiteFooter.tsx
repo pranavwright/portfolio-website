@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowUp, ArrowUpRight } from 'lucide-react'
 import { TypographyVortex } from '@/components/ui/TypographyVortex'
 import { Magnetic } from '@/components/ui/Magnetic'
+import { SITE } from '@/lib/site'
 
 interface SiteFooterProps {
   name?: string
@@ -16,12 +17,12 @@ interface SiteFooterProps {
 }
 
 export function SiteFooter({
-  name = 'Pranav P S',
-  email = 'pranavwright@gmail.com',
-  githubUrl = 'https://github.com/pranavwright',
-  linkedinUrl = 'https://linkedin.com/in/Pranav-wright',
-  instagramUrl = 'https://instagram.com/pranav.wright',
-  twitterUrl = 'https://x.com/pranav_wright',
+  name = SITE.name,
+  email = SITE.email,
+  githubUrl = SITE.socials.github,
+  linkedinUrl = SITE.socials.linkedin,
+  instagramUrl = SITE.socials.instagram,
+  twitterUrl = SITE.socials.twitter,
 }: SiteFooterProps) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })

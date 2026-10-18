@@ -3,25 +3,24 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
-import { getSiteSettings, getSkills, getExperience, getAchievements } from '@/sanity/fetch'
+import { getSkills, getExperience, getAchievements } from '@/sanity/fetch'
+import { SITE } from '@/lib/site'
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'About — Pranav P S',
-  description:
-    'Background, origin story, engineering philosophy, and career history of Pranav P S.',
+  title: `About — ${SITE.name}`,
+  description: `Background, origin story, engineering philosophy, and career history of ${SITE.name}.`,
 }
 
 export default async function AboutPage() {
-  const [settings, skills, experience, achievements] = await Promise.all([
-    getSiteSettings(),
+  const [skills, experience, achievements] = await Promise.all([
     getSkills(),
     getExperience(),
     getAchievements(),
   ])
 
-  const name = settings?.name || 'Pranav P S'
+  const name = SITE.name
 
   const storySections = [
     {
@@ -140,6 +139,47 @@ export default async function AboutPage() {
           )}
         </div>
       </section>
+
+      {/* Key Milestones & Achievements */}
+      {achievements && achievements.length > 0 && (
+        <section aria-labelledby="milestones-title" className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <h2 id="milestones-title" className="display text-[clamp(2.75rem,5.4vw,5.5rem)] text-foreground">
+            Milestones
+          </h2>
+          <div className="mt-12 space-y-8">
+            {achievements.map((item) => (
+              <div
+                key={item._id}
+                className="grid gap-4 border-t border-border pt-8 md:grid-cols-12 md:gap-8"
+              >
+                <div className="md:col-span-4">
+                  <p className="text-xl font-bold text-foreground">{item.title}</p>
+                  <p className="text-sm font-medium text-primary capitalize mt-1">
+                    {item.category} {item.date ? `• ${new Date(item.date).getFullYear()}` : ''}
+                  </p>
+                </div>
+                <div className="md:col-span-7 md:col-start-6">
+                  {item.description && (
+                    <p className="text-muted-foreground text-[16px] leading-relaxed">
+                      {item.description}
+                    </p>
+                  )}
+                  {item.evidenceUrl && (
+                    <a
+                      href={item.evidenceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+                    >
+                      View verification / evidence <ArrowUpRight className="size-4" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Short Version & Resume Callout */}
       <section className="px-5 py-[clamp(5rem,14vh,9rem)] md:px-10">

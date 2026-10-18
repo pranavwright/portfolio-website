@@ -62,36 +62,6 @@ if (!WRITE_TOKEN) {
 }
 
 const documents = [
-  // 1. Site Settings (Singleton)
-  {
-    _id: 'siteSettings',
-    _type: 'siteSettings',
-    name: 'Pranav Wright',
-    alternativeName: 'Pranav P.S.',
-    headline: 'I build software that turns ideas into reality.',
-    roles: [
-      'Software Developer',
-      'Full-Stack Developer',
-      'Product Builder',
-      'Web Designer',
-      'Technology Entrepreneur',
-    ],
-    shortBio:
-      "I'm a developer and product builder focused on creating useful digital products, solving real-world problems, and turning complex ideas into simple, intuitive experiences.",
-    location: 'Kerala, India',
-    email: SEED_EMAIL,
-    githubUrl: 'https://github.com/pranavwright',
-    linkedinUrl: 'https://linkedin.com/in/Pranav-wright',
-    instagramUrl: 'https://instagram.com/pranav.wright',
-    twitterUrl: 'https://x.com/pranav_wright',
-    contactHeadline: 'Have an idea worth building?',
-    contactSubtext:
-      "I'm interested in building useful products, solving interesting technical problems, and collaborating with people who want to turn ideas into reality.",
-    seoTitle: 'Pranav Wright — Developer, Product Builder & Designer',
-    seoDescription:
-      'Software developer, full-stack engineer, and product builder from Kerala, India. Explore featured projects, engineering experience, and technical skills.',
-  },
-
   // 2. Project: NowMe.live
   {
     _id: 'project-nowme-live',
@@ -100,7 +70,9 @@ const documents = [
     slug: {_type: 'slug', current: 'nowme-live'},
     summary:
       'An AI-powered business operating system helping small businesses effortlessly manage their online presence, customer operations, inventory, and automation.',
-    status: 'in-progress',
+    status: 'building',
+    currentlyBuilding: true,
+    focusArea: 'Merchant Dashboard & AI Workflows',
     category: 'web-app',
     role: 'Product Builder & Full-Stack Architect',
     featured: true,
@@ -129,7 +101,9 @@ const documents = [
     slug: {_type: 'slug', current: 'realsq'},
     summary:
       'Disaster-management platform engineered for emergency response coordination, relief camp logistics, victim registration, and transparent resource distribution.',
-    status: 'in-progress',
+    status: 'building',
+    currentlyBuilding: true,
+    focusArea: 'Fastify API & Camp Logistics Engine',
     category: 'web-app',
     role: 'Backend & Systems Developer',
     featured: true,
@@ -158,7 +132,9 @@ const documents = [
     slug: {_type: 'slug', current: 'carryko'},
     summary:
       'On-demand vehicle booking application concept designed to simplify vehicle discovery, transit scheduling, and transparent customer-driver communication.',
-    status: 'in-progress',
+    status: 'building',
+    currentlyBuilding: true,
+    focusArea: 'Flutter Mobile Prototype',
     category: 'mobile',
     role: 'Product Designer & Full-Stack Developer',
     featured: false,
@@ -177,39 +153,25 @@ const documents = [
     startDate: '2024-02-15',
   },
 
-  // 5. Currently Building items
+  // 5. Education
   {
-    _id: 'building-nowme',
-    _type: 'currentlyBuilding',
-    title: 'NowMe.live',
-    status: 'building',
+    _id: 'education-btech-cse',
+    _type: 'education',
+    degree: 'Bachelor of Technology (B.Tech)',
+    fieldOfStudy: 'Computer Science & Engineering',
+    institution: 'APJ Abdul Kalam Technological University',
+    location: 'Kerala, India',
+    startDate: '2020-08-01',
+    endDate: '2024-06-01',
+    isCurrent: false,
+    grade: 'First Class',
     description:
-      'Iterating on merchant workflows, AI-assisted storefront setup, and consolidated customer communications.',
-    focusArea: 'Merchant Dashboard & AI Workflows',
-    lastUpdated: '2024-10-01',
+      'Rigorous foundation in computer science: algorithms, operating systems, distributed architectures, database management, and network protocols.',
+    activities: [
+      'Engineered interactive exhibitions and software demonstrations',
+      'Technical symposium coordinator and open-source contributor',
+    ],
     sortOrder: 1,
-  },
-  {
-    _id: 'building-realsq',
-    _type: 'currentlyBuilding',
-    title: 'RealSQ / ResQ',
-    status: 'building',
-    description:
-      'Hardening real-time camp synchronization, offline-first sync protocols, and emergency resource matching.',
-    focusArea: 'Fastify API & Camp Logistics Engine',
-    lastUpdated: '2024-09-15',
-    sortOrder: 2,
-  },
-  {
-    _id: 'building-carryko',
-    _type: 'currentlyBuilding',
-    title: 'CarryKo',
-    status: 'experimenting',
-    description:
-      'Prototyping mobile dispatch interface and testing route booking flows with Flutter.',
-    focusArea: 'Flutter Mobile Prototype',
-    lastUpdated: '2024-08-20',
-    sortOrder: 3,
   },
 
   // 6. Skills

@@ -5,13 +5,13 @@ import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
 import { getAllProjects } from '@/sanity/fetch'
 import { urlForImage } from '@/sanity/image'
+import { SITE } from '@/lib/site'
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Work — Selected Engineering Projects',
-  description:
-    'Production software systems, distributed backends, and full-stack web applications engineered by Pranav P S.',
+  description: `Production software systems, distributed backends, and full-stack web applications engineered by ${SITE.name}.`,
 }
 
 const fallbackProjects = [

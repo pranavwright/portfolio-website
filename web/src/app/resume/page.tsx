@@ -1,14 +1,14 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Download } from 'lucide-react'
-import { getExperience, getSkills } from '@/sanity/fetch'
+import { getExperience, getSkills, getEducation } from '@/sanity/fetch'
+import { SITE } from '@/lib/site'
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Resume — Pranav P S',
-  description:
-    'Full-stack developer resume: career experience, technical skills, systems architecture, and downloadable PDF.',
+  title: `Resume — ${SITE.name}`,
+  description: `Full-stack developer resume: career experience, technical skills, systems architecture, and downloadable PDF.`,
 }
 
 const fallbackExperience = [
@@ -53,8 +53,21 @@ const fallbackSkills = [
   },
 ]
 
+const categoryLabels: Record<string, string> = {
+  frontend: 'Frontend & UI Engineering',
+  backend: 'Backend & Distributed Systems',
+  databases: 'Databases & Infrastructure',
+  mobile: 'Mobile Applications',
+  'product-design': 'Product & Interaction Design',
+  tools: 'Developer Tools & Architecture',
+}
+
 export default async function ResumePage() {
-  const [sanityExp, sanitySkills] = await Promise.all([getExperience(), getSkills()])
+  const [sanityExp, sanitySkills, sanityEducation] = await Promise.all([
+    getExperience(),
+    getSkills(),
+    getEducation(),
+  ])
 
   const experience =
     sanityExp.length > 0
@@ -75,6 +88,18 @@ export default async function ResumePage() {
         }))
       : fallbackExperience
 
+  const skillsList =
+    sanitySkills.length > 0
+      ? Object.entries(
+          sanitySkills.reduce<Record<string, string[]>>((acc, s) => {
+            const groupName = categoryLabels[s.category] || s.category || 'Technologies'
+            if (!acc[groupName]) acc[groupName] = []
+            acc[groupName].push(s.name)
+            return acc
+          }, {})
+        ).map(([group, items]) => ({ group, items }))
+      : fallbackSkills
+
   return (
     <div className="pt-[calc(var(--header-height)+clamp(2rem,8vh,5rem))] pb-[clamp(5rem,14vh,10rem)]">
       <div className="max-w-7xl mx-auto">
@@ -84,8 +109,8 @@ export default async function ResumePage() {
             Resume
           </h1>
           <a
-            href="/pranav.pdf"
-            download="Pranav_PS_Resume.pdf"
+            href={SITE.logo.resumePdf}
+            download={SITE.logo.resumeFileName}
             className="inline-flex h-14 items-center gap-2.5 rounded-full bg-primary px-7 text-[16px] font-semibold text-primary-foreground transition-transform active:scale-[0.97] shadow-xl hover:opacity-95"
           >
             <Download aria-hidden="true" className="size-5" strokeWidth={2} />
@@ -142,7 +167,7 @@ export default async function ResumePage() {
             Skills &amp; Technologies
           </h2>
           <div className="mt-6 grid gap-7">
-            {fallbackSkills.map(({ group, items }) => (
+            {skillsList.map(({ group, items }) => (
               <div key={group}>
                 <h3 className="text-[15px] font-semibold text-muted-foreground">{group}</h3>
                 <ul className="mt-3 flex flex-wrap gap-2">
@@ -165,14 +190,46 @@ export default async function ResumePage() {
             Education &amp; Background
           </h2>
           <div className="mt-6 space-y-6">
-            <div className="border-t border-border pt-4">
-              <p className="text-lg font-semibold text-foreground">Computer Science &amp; Engineering</p>
-              <p className="text-[16px] text-muted-foreground">Kerala, India</p>
-            </div>
-            <div className="border-t border-border pt-4">
-              <p className="text-lg font-semibold text-foreground">Autonomous Problem Solving &amp; Design</p>
-              <p className="text-[16px] text-muted-foreground">Continuous research, open-source building, and production software delivery.</p>
-            </div>
+            {sanityEducation.length > 0 ? (
+              sanityEducation.map((edu) => (
+                <div key={edu._id} className="border-t border-border pt-4">
+                  <p className="text-lg font-semibold text-foreground">
+                    {edu.degree}{edu.fieldOfStudy ? ` in ${edu.fieldOfStudy}` : ''}
+                  </p>
+                  <p className="text-[15px] font-medium text-primary mt-0.5">{edu.institution}</p>
+                  <p className="text-[14px] text-muted-foreground mt-0.5 tabular">
+                    {edu.startDate ? new Date(edu.startDate).getFullYear() : ''} — {edu.isCurrent ? 'Present' : edu.endDate ? new Date(edu.endDate).getFullYear() : 'Completed'}
+                    {edu.location ? ` • ${edu.location}` : ''}
+                    {edu.grade ? ` • ${edu.grade}` : ''}
+                  </p>
+                  {edu.description && (
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                      {edu.description}
+                    </p>
+                  )}
+                  {edu.activities && edu.activities.length > 0 && (
+                    <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+                      {edu.activities.map((act, i) => (
+                        <li key={i} className="pl-3 relative before:absolute before:left-0 before:top-2 before:size-1 before:bg-primary before:rounded-full">
+                          {act}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="border-t border-border pt-4">
+                  <p className="text-lg font-semibold text-foreground">Computer Science &amp; Engineering</p>
+                  <p className="text-[16px] text-muted-foreground">Kerala, India</p>
+                </div>
+                <div className="border-t border-border pt-4">
+                  <p className="text-lg font-semibold text-foreground">Autonomous Problem Solving &amp; Design</p>
+                  <p className="text-[16px] text-muted-foreground">Continuous research, open-source building, and production software delivery.</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Mail, Moon, Sun, Menu, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { SITE } from '@/lib/site'
 
 interface SiteHeaderProps {
   name?: string
@@ -18,8 +19,8 @@ const navItems = [
 ]
 
 export function SiteHeader({
-  name = 'Pranav P S',
-  email = 'pranavwright@gmail.com',
+  name = SITE.name,
+  email = SITE.email,
 }: SiteHeaderProps) {
   const pathname = usePathname()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')

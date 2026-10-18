@@ -138,43 +138,6 @@ async function run() {
   )
 
   const documents = [
-    // 1. Site Settings with Avatar
-    {
-      _id: 'siteSettings',
-      _type: 'siteSettings',
-      name: 'Pranav Wright',
-      alternativeName: 'Pranav P.S.',
-      headline: 'Creative Developer & Product Architect.',
-      roles: [
-        'Full-Stack Developer',
-        'Product Architect',
-        'Web Systems',
-        'UI/UX Designer',
-      ],
-      shortBio:
-        'Software developer and product builder from Kerala, India. Focused on creating reliable digital products, solving real-world operational problems, and building software that turns complex requirements into clean, intuitive experiences.',
-      location: 'Kerala, India',
-      email: SEED_EMAIL,
-      githubUrl: 'https://github.com/pranavwright',
-      linkedinUrl: 'https://linkedin.com/in/Pranav-wright',
-      instagramUrl: 'https://instagram.com/pranav.wright',
-      twitterUrl: 'https://x.com/pranav_wright',
-      contactHeadline: 'Have an idea worth building?',
-      contactSubtext:
-        "I'm interested in building useful products, solving interesting technical problems, and collaborating with people who want to turn ideas into reality.",
-      seoTitle: 'Pranav Wright — Developer, Product Builder & Designer',
-      seoDescription:
-        'Software developer, full-stack engineer, and product builder from Kerala, India. Explore featured projects, engineering experience, and technical skills.',
-      ...(avatarDoc
-        ? {
-            avatar: {
-              _type: 'image',
-              asset: {_type: 'reference', _ref: avatarDoc._id},
-            },
-          }
-        : {}),
-    },
-
     // 2. Project: NowMe.live
     {
       _id: 'project-nowme-live',

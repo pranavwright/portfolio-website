@@ -2,26 +2,24 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { Mail, MapPin, Clock, ArrowUpRight } from 'lucide-react'
 import { ContactForm } from '@/components/contact/ContactForm'
-import { getSiteSettings } from '@/sanity/fetch'
+import { SITE } from '@/lib/site'
 
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Contact — Pranav P S',
-  description:
-    'Get in touch with Pranav P S: discuss full-stack engineering, systems architecture, contracts, or technical collaboration.',
+  title: `Contact — ${SITE.name}`,
+  description: `Get in touch with ${SITE.name}: discuss full-stack engineering, systems architecture, contracts, or technical collaboration.`,
 }
 
-export default async function ContactPage() {
-  const settings = await getSiteSettings()
-  const email = settings?.email || 'pranavwright@gmail.com'
-  const name = settings?.name || 'Pranav P S'
+export default function ContactPage() {
+  const email = SITE.email
+  const name = SITE.name
 
   const profiles = [
-    { label: 'GitHub', href: settings?.githubUrl || 'https://github.com/pranavwright' },
-    { label: 'LinkedIn', href: settings?.linkedinUrl || 'https://linkedin.com/in/Pranav-wright' },
-    { label: 'X (Twitter)', href: settings?.twitterUrl || 'https://x.com/pranav_wright' },
-    { label: 'Instagram', href: settings?.instagramUrl || 'https://instagram.com/pranav.wright' },
+    { label: 'GitHub', href: SITE.socials.github },
+    { label: 'LinkedIn', href: SITE.socials.linkedin },
+    { label: 'X (Twitter)', href: SITE.socials.twitter },
+    { label: 'Instagram', href: SITE.socials.instagram },
   ]
 
   return (
@@ -34,10 +32,10 @@ export default async function ContactPage() {
           <span>Open for collaboration</span>
         </div>
         <h1 className="display max-w-[14ch] text-[clamp(3.5rem,9.5vw,8rem)] leading-[0.86] text-foreground">
-          Let's build something enduring.
+          {SITE.contact.headline}
         </h1>
         <p className="mt-8 max-w-[48ch] text-[clamp(1.2rem,1.7vw,1.6rem)] leading-snug text-muted-foreground">
-          Have a complex engineering challenge, an ambitious product to launch, or want to explore collaboration? Send a note below or reach out directly.
+          {SITE.contact.subtext}
         </p>
       </section>
 

@@ -8,10 +8,15 @@ import { gsap, ScrollTrigger, useGSAP, cinematic, motionOk } from '@/lib/gsap'
 import { splitText } from '@/lib/split-text'
 import { StarTrails } from './HeroExposure'
 import { pranavNotes, NoteMarks, NoteCards } from './HeroNotes'
+import { SITE } from '@/lib/site'
 
 export function HeroSequence() {
   const root = useRef<HTMLElement>(null)
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null)
+
+  const nameParts = SITE.name.trim().split(' ')
+  const firstName = nameParts[0] || SITE.name
+  const lastName = nameParts.slice(1).join(' ') || ''
 
   useEffect(() => {
     document.documentElement.dataset.headerTone = 'clear'
@@ -178,7 +183,7 @@ export function HeroSequence() {
                 <div className="cover-photo absolute inset-x-0 -top-[14%] h-[124%]">
                   <Image
                     src="/pranav/hero-bg.jpg"
-                    alt="Pranav P S"
+                    alt={SITE.name}
                     fill
                     sizes="100vw"
                     priority
@@ -195,13 +200,15 @@ export function HeroSequence() {
                   id="home-title"
                   className="whitespace-nowrap text-[15vw] font-[820] uppercase leading-[0.8] tracking-[-0.02em] [font-stretch:125%] md:text-center md:text-[calc((100vw-6rem)/10.45)]"
                 >
-                  <span className="sr-only normal-case">Pranav P S</span>
+                  <span className="sr-only normal-case">{SITE.name}</span>
                   <span aria-hidden="true" className="hero-first block md:inline-block">
-                    <span className="hero-name-part block md:inline-block">PRANAV</span>
+                    <span className="hero-name-part block md:inline-block">{firstName.toUpperCase()}</span>
                   </span>{' '}
-                  <span aria-hidden="true" className="hero-last block md:inline-block">
-                    <span className="hero-name-part block md:inline-block">P S</span>
-                  </span>
+                  {lastName && (
+                    <span aria-hidden="true" className="hero-last block md:inline-block">
+                      <span className="hero-name-part block md:inline-block">{lastName.toUpperCase()}</span>
+                    </span>
+                  )}
                 </h1>
               </div>
 
@@ -246,14 +253,13 @@ export function HeroSequence() {
               <div className="hero-lead pointer-events-auto md:w-[28rem]">
                 <div className="hero-fade">
                   <p className="mb-4 text-[15px] font-semibold md:text-base">
-                    Full-stack developer &amp; product builder{' '}
+                    {SITE.role}{' '}
                     <span className="inline-block rounded-full bg-primary/20 px-2.5 py-0.5 text-xs text-primary font-bold">
-                      Kerala, IN
+                      {SITE.location.region}, {SITE.location.countryCode}
                     </span>
                   </p>
                   <p className="text-lg leading-snug md:text-[1.35rem]">
-                    I architect scalable web systems, craft tactile user interfaces, and build fast with
-                    modern frameworks.
+                    {SITE.headline}
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link

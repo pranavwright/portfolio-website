@@ -1,10 +1,11 @@
 import {MetadataRoute} from 'next'
 import {getProjectSlugs} from '@/sanity/fetch'
+import {SITE} from '@/lib/site'
 
 export const revalidate = 3600 // Revalidate sitemap every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://pranavwright.com'
+  const baseUrl = SITE.url
   let projectRoutes: MetadataRoute.Sitemap = []
 
   try {
@@ -52,6 +53,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/projects`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/llms.txt`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/llms-full.txt`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { Send, CheckCircle2, AlertCircle, Loader2, Sparkles, Mail, Copy, Check } from 'lucide-react'
+import { SITE } from '@/lib/site'
 
 interface ContactFormProps {
   formId?: string
@@ -18,7 +19,7 @@ const inquiryTopics = [
 
 export function ContactForm({
   formId,
-  recipientEmail = 'pranavwright@gmail.com',
+  recipientEmail = SITE.email,
 }: ContactFormProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -213,7 +214,7 @@ export function ContactForm({
             href={`mailto:${recipientEmail}?subject=${encodeURIComponent(
               `[${subject}] Inquiry from ${name || 'Portfolio Contact'}`
             )}&body=${encodeURIComponent(
-              `Hi Pranav,\n\nName: ${name}\nEmail: ${email}\nTopic: ${subject}\n\n${message}`
+              `Hi ${SITE.shortName || SITE.name},\n\nName: ${name}\nEmail: ${email}\nTopic: ${subject}\n\n${message}`
             )}`}
             className="inline-flex h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-semibold text-primary-foreground hover:opacity-95 shadow-md active:scale-[0.97] transition-all"
           >

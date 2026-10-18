@@ -4,22 +4,12 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('Portfolio Content')
     .items([
-      // Singleton: Site Settings
-      S.listItem()
-        .title('Site Settings')
-        .child(
-          S.document()
-            .schemaType('siteSettings')
-            .documentId('siteSettings')
-            .title('Global Site Settings')
-        ),
+      // Projects
+      S.documentTypeListItem('project').title('Projects (All & Building)'),
       S.divider(),
-      // Projects & In-progress work
-      S.documentTypeListItem('project').title('Projects'),
-      S.documentTypeListItem('currentlyBuilding').title('Currently Building (Now)'),
-      S.divider(),
-      // Skills, Experience & Achievements
-      S.documentTypeListItem('skill').title('Skills & Technologies'),
+      // Experience, Education, Skills & Achievements
       S.documentTypeListItem('experience').title('Experience & Timeline'),
+      S.documentTypeListItem('education').title('Education & Academics'),
+      S.documentTypeListItem('skill').title('Skills & Technologies'),
       S.documentTypeListItem('achievement').title('Milestones & Achievements'),
     ])

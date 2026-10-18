@@ -20,6 +20,7 @@ import {TechBadge} from '@/components/ui/TechBadge'
 import {PortableTextRenderer} from '@/components/ui/PortableTextRenderer'
 import {urlForImage} from '@/sanity/image'
 import {formatDate} from '@/lib/utils'
+import {SITE} from '@/lib/site'
 
 export const revalidate = 60
 
@@ -388,12 +389,12 @@ export default async function ProjectDetailPage({params}: ProjectPageProps) {
             dateModified: project._updatedAt || project.startDate,
             author: {
               '@type': 'Person',
-              name: 'Pranav P S',
-              url: 'https://pranavwright.com',
+              name: SITE.name,
+              url: SITE.url,
             },
             publisher: {
               '@type': 'Person',
-              name: 'Pranav P S',
+              name: SITE.name,
             },
           }),
         }}

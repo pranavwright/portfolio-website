@@ -1,32 +1,22 @@
 import {client} from './client'
 import {
-  siteSettingsQuery,
   allProjectsQuery,
   featuredProjectsQuery,
   projectBySlugQuery,
   skillsQuery,
   experienceQuery,
+  educationQuery,
   achievementsQuery,
-  currentlyBuildingQuery,
+  currentlyBuildingProjectsQuery,
   projectSlugsQuery,
 } from './queries'
 import type {
-  SiteSettings,
   Project,
   Skill,
   Experience,
+  Education,
   Achievement,
-  CurrentlyBuilding,
 } from './types'
-
-export async function getSiteSettings(): Promise<SiteSettings | null> {
-  try {
-    return await client.fetch<SiteSettings | null>(siteSettingsQuery)
-  } catch (err) {
-    console.error('Error fetching siteSettings:', err)
-    return null
-  }
-}
 
 export async function getAllProjects(): Promise<Project[]> {
   try {
@@ -91,11 +81,20 @@ export async function getAchievements(): Promise<Achievement[]> {
   }
 }
 
-export async function getCurrentlyBuilding(): Promise<CurrentlyBuilding[]> {
+export async function getEducation(): Promise<Education[]> {
   try {
-    return await client.fetch<CurrentlyBuilding[]>(currentlyBuildingQuery)
+    return await client.fetch<Education[]>(educationQuery)
   } catch (err) {
-    console.error('Error fetching currently building:', err)
+    console.error('Error fetching education:', err)
+    return []
+  }
+}
+
+export async function getCurrentlyBuilding(): Promise<Project[]> {
+  try {
+    return await client.fetch<Project[]>(currentlyBuildingProjectsQuery)
+  } catch (err) {
+    console.error('Error fetching currently building projects:', err)
     return []
   }
 }

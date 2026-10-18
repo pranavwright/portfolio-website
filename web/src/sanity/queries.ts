@@ -1,39 +1,5 @@
 import groq from 'groq'
 
-// Global site settings singleton
-export const siteSettingsQuery = groq`
-  *[_type == "siteSettings" && _id == "siteSettings"][0] {
-    _id,
-    _type,
-    name,
-    alternativeName,
-    headline,
-    roles,
-    shortBio,
-    aboutBio,
-    location,
-    avatar {
-      ...,
-      asset->
-    },
-    email,
-    githubUrl,
-    linkedinUrl,
-    instagramUrl,
-    twitterUrl,
-    resumePdf {
-      asset-> {
-        url,
-        originalFilename
-      }
-    },
-    contactHeadline,
-    contactSubtext,
-    seoTitle,
-    seoDescription
-  }
-`
-
 // All published projects
 export const allProjectsQuery = groq`
   *[_type == "project" && defined(publishedAt) && publishedAt <= now()] | order(sortOrder asc, publishedAt desc) {
@@ -43,6 +9,8 @@ export const allProjectsQuery = groq`
     slug,
     summary,
     status,
+    currentlyBuilding,
+    focusArea,
     category,
     role,
     featured,
@@ -178,17 +146,51 @@ export const achievementsQuery = groq`
   }
 `
 
-// Currently Building (Now)
-export const currentlyBuildingQuery = groq`
-  *[_type == "currentlyBuilding"] | order(sortOrder asc, _updatedAt desc) {
+// Education & Academic History
+export const educationQuery = groq`
+  *[_type == "education"] | order(startDate desc, sortOrder asc) {
+    _id,
+    _type,
+    degree,
+    fieldOfStudy,
+    institution,
+    location,
+    startDate,
+    endDate,
+    isCurrent,
+    grade,
+    description,
+    activities,
+    supportingUrl,
+    sortOrder
+  }
+`
+
+// Projects Currently Being Built
+export const currentlyBuildingProjectsQuery = groq`
+  *[_type == "project" && (currentlyBuilding == true || status in ["building", "in-progress"]) && defined(publishedAt) && publishedAt <= now()] | order(sortOrder asc, publishedAt desc) {
     _id,
     _type,
     title,
+    slug,
+    summary,
     status,
-    description,
+    currentlyBuilding,
     focusArea,
-    externalUrl,
-    lastUpdated,
-    sortOrder
+    category,
+    role,
+    featured,
+    featuredImage {
+      ...,
+      asset->
+    },
+    technologies,
+    features,
+    liveUrl,
+    repositoryUrl,
+    startDate,
+    endDate,
+    sortOrder,
+    publishedAt
   }
 `

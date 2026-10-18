@@ -6,7 +6,6 @@ import { InTheirWords } from '@/components/home/InTheirWords'
 import { ExperienceSection } from '@/components/home/ExperienceSection'
 import { BeyondSection } from '@/components/home/BeyondSection'
 import {
-  getSiteSettings,
   getFeaturedProjects,
   getAllProjects,
   getExperience,
@@ -15,8 +14,7 @@ import {
 export const revalidate = 60 // ISR: revalidate every minute
 
 export default async function HomePage() {
-  const [settings, featuredProjects, allProjects, experience] = await Promise.all([
-    getSiteSettings(),
+  const [featuredProjects, allProjects, experience] = await Promise.all([
     getFeaturedProjects(),
     getAllProjects(),
     getExperience(),
