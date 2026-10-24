@@ -37,20 +37,6 @@ export const project = defineType({
       description: 'Highlight prominently on the home page showcase',
     }),
     defineField({
-      name: 'currentlyBuilding',
-      title: 'Currently Building / Active Now',
-      type: 'boolean',
-      initialValue: false,
-      description: 'Mark if this project is actively being developed right now',
-    }),
-    defineField({
-      name: 'focusArea',
-      title: 'Current Focus / Active Feature',
-      type: 'string',
-      placeholder: 'e.g. Real-time camp sync & coordination engine',
-      description: 'What specific milestone or feature is being built right now?',
-    }),
-    defineField({
       name: 'status',
       title: 'Status',
       type: 'string',
@@ -278,14 +264,12 @@ export const project = defineType({
       media: 'featuredImage',
       status: 'status',
       featured: 'featured',
-      currentlyBuilding: 'currentlyBuilding',
-      focusArea: 'focusArea',
     },
-    prepare({title, subtitle, media, status, featured, currentlyBuilding, focusArea}) {
-      const tag = featured ? '★ ' : currentlyBuilding ? '⚡ ' : ''
+    prepare({title, subtitle, media, status, featured}) {
+      const tag = featured ? '★ ' : ''
       return {
         title: `${tag}${title}`,
-        subtitle: `[${status || 'draft'}] ${focusArea || subtitle || ''}`,
+        subtitle: `[${status || 'draft'}] ${subtitle || ''}`,
         media,
       }
     },

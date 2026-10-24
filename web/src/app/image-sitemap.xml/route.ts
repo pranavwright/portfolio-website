@@ -65,14 +65,11 @@ export async function GET() {
   )
   if (avatarEntry) homeImages.push(avatarEntry)
 
-  const heroEntry = toImageEntry(profile?.heroImage, `${SITE.name} Hero Portrait`)
-  if (heroEntry) homeImages.push(heroEntry)
-
   if (homeImages.length > 0) {
     pagesWithImages.push({ url: `${baseUrl}`, images: homeImages })
   }
 
-  // 2. About Page Images (Editorial Photo + Moments Gallery)
+  // 2. About Page Images (Editorial Photo + Adventures & Photoshoots Gallery)
   const aboutImages: ImageEntry[] = []
   const aboutEntry = toImageEntry(
     profile?.aboutImage,
@@ -83,7 +80,8 @@ export async function GET() {
 
   if (profile?.mediaGallery && Array.isArray(profile.mediaGallery)) {
     for (const m of profile.mediaGallery) {
-      const entry = toImageEntry(m.image, m.title, m.caption || m.alt)
+      const captionText = [m.subtitle, m.location, m.alt].filter(Boolean).join(' • ')
+      const entry = toImageEntry(m.image, m.title || 'Photograph by Pranav Wright', captionText)
       if (entry) aboutImages.push(entry)
     }
   }

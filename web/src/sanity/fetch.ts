@@ -7,7 +7,6 @@ import {
   experienceQuery,
   educationQuery,
   achievementsQuery,
-  currentlyBuildingProjectsQuery,
   projectSlugsQuery,
   profileQuery,
 } from './queries'
@@ -98,15 +97,6 @@ export async function getEducation(): Promise<Education[]> {
     return await client.fetch<Education[]>(educationQuery)
   } catch (err) {
     console.error('Error fetching education:', err)
-    return []
-  }
-}
-
-export async function getCurrentlyBuilding(): Promise<Project[]> {
-  try {
-    return await client.fetch<Project[]>(currentlyBuildingProjectsQuery)
-  } catch (err) {
-    console.error('Error fetching currently building projects:', err)
     return []
   }
 }

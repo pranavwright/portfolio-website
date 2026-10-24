@@ -28,7 +28,6 @@ export default async function HomePage() {
 
   const beyondPhoto =
     achievements.find((a) => a.image)?.image ||
-    profile?.mediaGallery?.find((m) => m.category === 'speaking' || m.category === 'exhibition')?.image ||
     profile?.mediaGallery?.[0]?.image
 
   return (

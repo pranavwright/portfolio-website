@@ -120,19 +120,13 @@ async function run() {
     : avatarPath
   const aboutDoc = await uploadAsset(aboutPath, 'image/jpeg')
 
-  // 3. Hero Cutout
-  const heroPath = fs.existsSync(path.join(assetsDir, 'pranav/pranav_pic-removebg-preview.png'))
-    ? path.join(assetsDir, 'pranav/pranav_pic-removebg-preview.png')
-    : path.join(webPublicDir, 'pranav/hero.png')
-  const heroDoc = await uploadAsset(heroPath, 'image/png')
-
-  // 4. KSDMA Presentation Photo
+  // 3. KSDMA Presentation Photo
   const ksdmaPath = fs.existsSync(path.join(assetsDir, 'achivements/presentation-KSDMA.jpg'))
     ? path.join(assetsDir, 'achivements/presentation-KSDMA.jpg')
     : path.join(webPublicDir, 'achivements/presentation-KSDMA.jpg')
   const ksdmaDoc = await uploadAsset(ksdmaPath, 'image/jpeg')
 
-  // 5. NAAC A+ Exhibition / Honor Photo
+  // 4. NAAC A+ Exhibition / Honor Photo
   const naacPath = fs.existsSync(path.join(assetsDir, 'achivements/achivement-h-1.jpg'))
     ? path.join(assetsDir, 'achivements/achivement-h-1.jpg')
     : path.join(webPublicDir, 'achivements/achivement-h-1.jpg')
@@ -140,16 +134,29 @@ async function run() {
 
   const mediaGallery = []
 
+  if (aboutDoc) {
+    mediaGallery.push({
+      _key: 'studio-portrait-session',
+      title: 'Engineering Studio Session',
+      subtitle: 'Portraits & Creative Space',
+      location: 'Trivandrum, Kerala',
+      date: '2024-04-10',
+      alt: 'Pranav Wright in software engineering and creative studio',
+      image: {
+        _type: 'image',
+        asset: {_type: 'reference', _ref: aboutDoc._id},
+      },
+    })
+  }
+
   if (ksdmaDoc) {
     mediaGallery.push({
       _key: 'ksdma-presentation-2024',
-      title: 'Disaster-Management System Presentation at KSDMA',
-      category: 'speaking',
-      date: '2024-03-15',
+      title: 'Disaster Operations Presentation',
+      subtitle: 'State Emergency Center • Technical Talk',
       location: 'Trivandrum, Kerala',
+      date: '2024-03-15',
       alt: 'Pranav Wright presenting RealSQ architecture at Kerala State Disaster Management Authority',
-      caption:
-        'Presented architectural blueprints and emergency response workflows to evaluators and disaster response officials.',
       image: {
         _type: 'image',
         asset: {_type: 'reference', _ref: ksdmaDoc._id},
@@ -160,13 +167,11 @@ async function run() {
   if (naacDoc) {
     mediaGallery.push({
       _key: 'naac-exhibition-2024',
-      title: 'NAAC A+ Institutional Technical Showcase',
-      category: 'exhibition',
-      date: '2024-02-10',
+      title: 'NAAC A+ Technical Showcase',
+      subtitle: 'Exhibition & System Demonstrations',
       location: 'Kerala, India',
+      date: '2024-02-10',
       alt: 'Pranav Wright exhibiting technical systems contributing to NAAC A+ accreditation',
-      caption:
-        'Exhibited intelligent conversational interfaces and interactive game architectures for institutional evaluation.',
       image: {
         _type: 'image',
         asset: {_type: 'reference', _ref: naacDoc._id},
@@ -177,9 +182,6 @@ async function run() {
   const profileDoc = {
     _id: 'profile',
     _type: 'profile',
-    fullName: 'Pranav Wright',
-    headline: 'Full-Stack Developer & Systems Architect',
-    bio: 'Software developer, full-stack engineer, and product architect from Kerala, India. Building resilient systems, distributed software, and intuitive user experiences.',
     ...(avatarDoc
       ? {
           avatar: {
@@ -197,15 +199,6 @@ async function run() {
             alt: 'Pranav Wright in software engineering studio',
             caption: 'Pranav Wright exploring architecture and product design',
             asset: {_type: 'reference', _ref: aboutDoc._id},
-          },
-        }
-      : {}),
-    ...(heroDoc
-      ? {
-          heroImage: {
-            _type: 'image',
-            alt: 'Pranav Wright hero portrait',
-            asset: {_type: 'reference', _ref: heroDoc._id},
           },
         }
       : {}),

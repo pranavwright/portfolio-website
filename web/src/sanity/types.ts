@@ -22,10 +22,9 @@ export interface SanityImage {
 
 export interface MediaGalleryItem {
   _key: string
-  title: string
-  alt: string
-  caption?: string
-  category?: 'speaking' | 'award' | 'exhibition' | 'workspace' | 'portrait' | 'event'
+  title?: string
+  subtitle?: string
+  alt?: string
   date?: string
   location?: string
   image: SanityImage
@@ -34,14 +33,8 @@ export interface MediaGalleryItem {
 export interface Profile {
   _id: string
   _type: 'profile'
-  fullName?: string
-  headline?: string
-  bio?: string
   avatar?: SanityImage
   aboutImage?: SanityImage
-  heroImage?: SanityImage
-  heroBackground?: SanityImage
-  socialOgImage?: SanityImage
   mediaGallery?: MediaGalleryItem[]
 }
 
@@ -60,8 +53,6 @@ export interface Project {
   category?: 'web-app' | 'mobile' | 'tool' | 'design' | 'experiment'
   role?: string
   featured?: boolean
-  currentlyBuilding?: boolean
-  focusArea?: string
   featuredImage?: SanityImage
   gallery?: SanityImage[]
   technologies?: string[]
@@ -87,7 +78,6 @@ export interface Skill {
   _type: 'skill'
   name: string
   category: 'frontend' | 'backend' | 'databases' | 'mobile' | 'product-design' | 'tools'
-  description?: string
   sortOrder?: number
 }
 
@@ -103,7 +93,6 @@ export interface Experience {
   description?: string
   achievements?: string[]
   technologies?: string[]
-  supportingUrl?: string
   sortOrder?: number
 }
 
@@ -120,7 +109,6 @@ export interface Education {
   grade?: string
   description?: string
   activities?: string[]
-  supportingUrl?: string
   sortOrder?: number
 }
 

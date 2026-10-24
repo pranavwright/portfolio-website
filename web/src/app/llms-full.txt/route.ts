@@ -37,7 +37,7 @@ export async function GET() {
           .map((m) => {
             const mUrl = urlForImage(m.image)?.url()
             return mUrl
-              ? `- **${m.title}** (${m.category || 'media'}${m.date ? ` — ${m.date}` : ''}${m.location ? ` @ ${m.location}` : ''}):\n  - Image URL: ${mUrl}\n  - Alt / Description: ${m.alt}\n  - Context: ${m.caption || 'Documented engineering milestone.'}`
+              ? `- **${m.title || 'Photoshoot / Adventure Photograph'}** (${[m.location, m.date].filter(Boolean).join(' — ')}):\n  - Image URL: ${mUrl}\n  - Alt / Description: ${m.alt || m.title || 'Photograph'}\n  - Context: ${m.subtitle || 'Personal photograph archive.'}`
               : null
           })
           .filter(Boolean)
@@ -219,7 +219,7 @@ ${gallerySections}
 
 ## 3. Professional Biography & Summary
 
-${profile?.bio || SITE.bio}
+${SITE.bio}
 
 ${SITE.aeo.aiSummary}
 
@@ -228,7 +228,7 @@ ${SITE.aeo.aiSummary}
 ## 4. Answer Engine Optimization (AEO) Direct Q&A
 
 ### Q: Who is ${SITE.name} (${SITE.alternateNames.join(', ')})?
-**A**: ${SITE.name} is a ${(profile?.headline || SITE.role).toLowerCase()} based in ${
+**A**: ${SITE.name} is a ${SITE.role.toLowerCase()} based in ${
     SITE.location.region
   }, ${
     SITE.location.country

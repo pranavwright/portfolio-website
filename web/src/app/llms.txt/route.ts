@@ -32,13 +32,15 @@ export async function GET() {
       ? profile.mediaGallery
           .map((m) => {
             const mUrl = urlForImage(m.image)?.url()
+            const desc = [m.subtitle, m.location, m.alt].filter(Boolean).join(' • ')
             return mUrl
-              ? `- [${m.title}](${mUrl}): ${m.caption || m.alt} (${m.category || 'media'}${m.date ? `, ${m.date}` : ''})`
+              ? `- [${m.title || 'Photoshoot / Adventure Photograph'}](${mUrl}): ${desc}${m.date ? ` (${m.date})` : ''}`
               : null
           })
           .filter(Boolean)
           .join('\n')
       : ''
+
 
   // Projects list
   const projectLines =
@@ -56,12 +58,12 @@ export async function GET() {
 
   const content = `# ${SITE.name}
 
-> ${profile?.bio || SITE.bio}
+> ${SITE.bio}
 
 ## About
-${SITE.name} is a ${(profile?.headline || SITE.role).toLowerCase()} based in ${SITE.location.region}, ${SITE.location.country}. ${SITE.aeo.aiSummary}
+${SITE.name} is a ${SITE.role.toLowerCase()} based in ${SITE.location.region}, ${SITE.location.country}. ${SITE.aeo.aiSummary}
 
-- **Primary Role**: ${profile?.headline || SITE.role}
+- **Primary Role**: ${SITE.role}
 - **Location**: ${SITE.location.city ? `${SITE.location.city}, ` : ''}${SITE.location.region}, ${SITE.location.country}
 - **Canonical Website**: ${baseUrl}
 - **Contact Email**: ${SITE.email}

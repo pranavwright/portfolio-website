@@ -13,15 +13,13 @@ export const revalidate = 300 // Revalidate layout every 5 minutes
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile().catch(() => null)
   const title = SITE.seo.title
-  const description = profile?.bio || SITE.seo.description
+  const description = SITE.seo.description
 
   const ogUrl =
-    (profile?.socialOgImage ? urlForImage(profile.socialOgImage)?.width(1200).height(630).url() : null) ||
     (profile?.avatar ? urlForImage(profile.avatar)?.width(1200).height(630).fit('crop').url() : null) ||
     SITE.logo.ogImage
 
   const ogAlt =
-    profile?.socialOgImage?.alt ||
     profile?.avatar?.alt ||
     `${SITE.name} — ${SITE.headline || SITE.role}`
 
@@ -135,8 +133,8 @@ export default async function RootLayout({
         alternateName: [...SITE.alternateNames],
         url: SITE.url,
         image: imageObject,
-        jobTitle: profile?.headline || SITE.roles[0] || SITE.aeo.jobTitle,
-        description: profile?.bio || SITE.seo.description,
+        jobTitle: SITE.role || SITE.roles[0] || SITE.aeo.jobTitle,
+        description: SITE.seo.description,
         disambiguatingDescription: SITE.aeo.aiSummary,
         address: {
           '@type': 'PostalAddress',
@@ -168,7 +166,7 @@ export default async function RootLayout({
         '@id': SITE.aeo.websiteId,
         url: SITE.url,
         name: `${SITE.name} Portfolio`,
-        description: profile?.bio || SITE.seo.description,
+        description: SITE.seo.description,
         inLanguage: 'en-US',
         publisher: {
           '@id': SITE.aeo.entityId,

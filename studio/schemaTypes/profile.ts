@@ -8,26 +8,6 @@ export const profile = defineType({
   icon: UserIcon,
   fields: [
     defineField({
-      name: 'fullName',
-      title: 'Full Name',
-      type: 'string',
-      initialValue: 'Pranav Wright',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'headline',
-      title: 'Headline / Role',
-      type: 'string',
-      placeholder: 'e.g. Full-Stack Developer & Systems Architect',
-    }),
-    defineField({
-      name: 'bio',
-      title: 'Short Bio',
-      type: 'text',
-      rows: 3,
-      description: 'Used for search meta descriptions, AI summaries, and intro text.',
-    }),
-    defineField({
       name: 'avatar',
       title: 'Primary Avatar / Headshot',
       type: 'image',
@@ -75,61 +55,16 @@ export const profile = defineType({
       ],
     }),
     defineField({
-      name: 'heroImage',
-      title: 'Hero Cutout / Portrait',
-      type: 'image',
-      description: 'Subject portrait cutout displayed on the home page hero stage.',
-      options: {hotspot: true},
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-          description: 'E.g. "Pranav Wright hero portrait"',
-        }),
-      ],
-    }),
-    defineField({
-      name: 'heroBackground',
-      title: 'Hero Ambient Background',
-      type: 'image',
-      description: 'Background environment image layered in the home page hero.',
-      options: {hotspot: true},
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-        }),
-      ],
-    }),
-    defineField({
-      name: 'socialOgImage',
-      title: 'Social Share / Open Graph Image (1200x630)',
-      type: 'image',
-      description:
-        'Custom social card shown when sharing the website on Twitter/X, LinkedIn, Discord, and Slack.',
-      options: {hotspot: true},
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-          description: 'E.g. "Pranav Wright Portfolio and Systems Architecture"',
-        }),
-      ],
-    }),
-    defineField({
       name: 'mediaGallery',
-      title: 'Press, Speaking & Moments Gallery',
+      title: 'Photoshoots & Adventures Gallery',
       type: 'array',
       description:
-        'Curated public photos (conference talks, awards, exhibitions, workshops, team moments) indexed by search engines and cited by AI engines.',
+        'Curated photos: outdoor adventures, photoshoots, and personal moments displayed on the /about page.',
       of: [
         defineArrayMember({
           type: 'object',
           name: 'mediaItem',
-          title: 'Media Photo',
+          title: 'Photo Entry',
           fields: [
             defineField({
               name: 'image',
@@ -140,69 +75,51 @@ export const profile = defineType({
             }),
             defineField({
               name: 'title',
-              title: 'Photo Title',
+              title: 'Title (Optional)',
               type: 'string',
-              placeholder: 'e.g. Presenting Disaster-Management Systems to KSDMA',
-              validation: (rule) => rule.required(),
+              placeholder: 'e.g. Engineering Studio Session',
+              description: 'Optional heading displayed on the photo and in full-screen lightbox.',
+            }),
+            defineField({
+              name: 'subtitle',
+              title: 'Subtitle (Optional)',
+              type: 'string',
+              placeholder: 'e.g. Portraits & Creative Space',
+              description: 'Secondary line displayed under the title.',
+            }),
+            defineField({
+              name: 'location',
+              title: 'Location (Optional)',
+              type: 'string',
+              placeholder: 'e.g. Trivandrum, Kerala',
+            }),
+            defineField({
+              name: 'date',
+              title: 'Date Taken (Optional)',
+              type: 'date',
             }),
             defineField({
               name: 'alt',
               title: 'Alt Text (SEO & AI Description)',
               type: 'string',
+              placeholder: 'e.g. Pranav Wright in outdoor photoshoot',
               description:
-                'Descriptive explanation of who and what is visible in the photo for Google Images and multimodal AI.',
-              validation: (rule) =>
-                rule
-                  .required()
-                  .warning('Alt text is required for AI answer engines and search engines to understand the photo.'),
-            }),
-            defineField({
-              name: 'caption',
-              title: 'Caption / Context',
-              type: 'text',
-              rows: 2,
-              placeholder:
-                'e.g. Explaining real-time coordination architecture at the state emergency operations center.',
-            }),
-            defineField({
-              name: 'category',
-              title: 'Category',
-              type: 'string',
-              options: {
-                list: [
-                  {title: 'Speaking & Presentations', value: 'speaking'},
-                  {title: 'Awards & Honors', value: 'award'},
-                  {title: 'Technical Exhibitions', value: 'exhibition'},
-                  {title: 'Workspace & Engineering', value: 'workspace'},
-                  {title: 'Portraits & Press', value: 'portrait'},
-                  {title: 'Candid & Events', value: 'event'},
-                ],
-              },
-              initialValue: 'speaking',
-            }),
-            defineField({
-              name: 'date',
-              title: 'Date Taken',
-              type: 'date',
-            }),
-            defineField({
-              name: 'location',
-              title: 'Location',
-              type: 'string',
-              placeholder: 'e.g. Trivandrum, Kerala',
+                'Explains what is in the image for search engines, screen readers, and AI.',
             }),
           ],
           preview: {
             select: {
               title: 'title',
-              subtitle: 'category',
+              subtitle: 'subtitle',
               media: 'image',
               date: 'date',
+              location: 'location',
             },
-            prepare({title, subtitle, media, date}) {
+            prepare({title, subtitle, media, date, location}) {
+              const meta = [location, date].filter(Boolean).join(' • ')
               return {
                 title: title || 'Untitled Photo',
-                subtitle: `${subtitle || 'photo'} ${date ? `• ${date}` : ''}`,
+                subtitle: subtitle || meta || 'Photo Entry',
                 media,
               }
             },
@@ -213,14 +130,12 @@ export const profile = defineType({
   ],
   preview: {
     select: {
-      title: 'fullName',
-      subtitle: 'headline',
       media: 'avatar',
     },
-    prepare({title, subtitle, media}) {
+    prepare({media}) {
       return {
-        title: title || 'Personal Profile',
-        subtitle: subtitle || 'Profile & Media Management',
+        title: 'Personal Visual Assets',
+        subtitle: 'Avatar, Editorial & Photoshoot Gallery',
         media,
       }
     },

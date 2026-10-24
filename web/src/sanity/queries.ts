@@ -9,8 +9,6 @@ export const allProjectsQuery = groq`
     slug,
     summary,
     status,
-    currentlyBuilding,
-    focusArea,
     category,
     role,
     featured,
@@ -112,7 +110,6 @@ export const skillsQuery = groq`
     _type,
     name,
     category,
-    description,
     sortOrder
   }
 `
@@ -131,7 +128,6 @@ export const experienceQuery = groq`
     description,
     achievements,
     technologies,
-    supportingUrl,
     sortOrder
   }
 `
@@ -141,9 +137,6 @@ export const profileQuery = groq`
   *[_type == "profile" && _id == "profile"][0] {
     _id,
     _type,
-    fullName,
-    headline,
-    bio,
     avatar {
       ...,
       asset-> {
@@ -166,45 +159,11 @@ export const profileQuery = groq`
         }
       }
     },
-    heroImage {
-      ...,
-      asset-> {
-        _id,
-        url,
-        metadata {
-          lqip,
-          dimensions
-        }
-      }
-    },
-    heroBackground {
-      ...,
-      asset-> {
-        _id,
-        url,
-        metadata {
-          lqip,
-          dimensions
-        }
-      }
-    },
-    socialOgImage {
-      ...,
-      asset-> {
-        _id,
-        url,
-        metadata {
-          lqip,
-          dimensions
-        }
-      }
-    },
     mediaGallery[] {
       _key,
       title,
+      subtitle,
       alt,
-      caption,
-      category,
       date,
       location,
       image {
@@ -247,7 +206,6 @@ export const achievementsQuery = groq`
   }
 `
 
-
 // Education & Academic History
 export const educationQuery = groq`
   *[_type == "education" && !(_id in path("drafts.**"))] | order(startDate desc, sortOrder asc) {
@@ -263,36 +221,6 @@ export const educationQuery = groq`
     grade,
     description,
     activities,
-    supportingUrl,
     sortOrder
-  }
-`
-
-// Projects Currently Being Built
-export const currentlyBuildingProjectsQuery = groq`
-  *[_type == "project" && (currentlyBuilding == true || status in ["building", "in-progress"]) && !(_id in path("drafts.**")) && (!defined(publishedAt) || publishedAt <= now())] | order(sortOrder asc, coalesce(publishedAt, _createdAt) desc) {
-    _id,
-    _type,
-    title,
-    slug,
-    summary,
-    status,
-    currentlyBuilding,
-    focusArea,
-    category,
-    role,
-    featured,
-    featuredImage {
-      ...,
-      asset->
-    },
-    technologies,
-    features,
-    liveUrl,
-    repositoryUrl,
-    startDate,
-    endDate,
-    sortOrder,
-    publishedAt
   }
 `

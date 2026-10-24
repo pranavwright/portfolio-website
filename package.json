@@ -3,8 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "dev": "npm --prefix web run dev",
     "dev:web": "npm --prefix web run dev",
     "dev:studio": "npm --prefix studio run dev",
+    "studio": "npm --prefix studio run dev",
+    "run:studio": "npm --prefix studio run dev",
     "build:web": "npm --prefix web install --legacy-peer-deps && npm --prefix web run build ",
     "build:studio": "npm --prefix studio install --legacy-peer-deps && npm --prefix studio run build",
     "pages:deploy": "npm --prefix web run pages:deploy",

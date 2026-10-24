@@ -70,11 +70,6 @@ export const education = defineType({
       description: 'Clubs, hackathons, academic societies, or leadership roles',
     }),
     defineField({
-      name: 'supportingUrl',
-      title: 'Institution / Verification URL',
-      type: 'url',
-    }),
-    defineField({
       name: 'sortOrder',
       title: 'Sort Order',
       type: 'number',

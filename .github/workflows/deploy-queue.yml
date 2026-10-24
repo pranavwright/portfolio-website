@@ -1,0 +1,47 @@
+name: Debounced Cloudflare Pages Deploy
+
+on:
+  repository_dispatch:
+    types: [sanity-publish]
+  workflow_dispatch:
+
+# Concurrency group with cancel-in-progress ensures that whenever a new
+# Sanity publish arrives, any previous waiting build is automatically cancelled
+# and the 2-minute timer restarts.
+concurrency:
+  group: cloudflare-pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  debounced-deploy:
+    name: Batch Queue & Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for edit batching window (120 seconds)
+        run: |
+          echo "=========================================================="
+          echo "Sanity publish event received."
+          echo "Entering 2-minute batching window to accumulate all edits..."
+          echo "If another edit arrives, this run will be cancelled & reset."
+          echo "=========================================================="
+          sleep 120
+          echo "Batching window closed with no further edits. Triggering Cloudflare build..."
+
+      - name: Trigger Cloudflare Pages Deploy Hook
+        run: |
+          if [ -n "${{ secrets.CLOUDFLARE_PAGES_DEPLOY_HOOK }}" ]; then
+            echo "Dispatching POST request to Cloudflare Pages Deploy Hook..."
+            HTTP_RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST "${{ secrets.CLOUDFLARE_PAGES_DEPLOY_HOOK }}")
+            echo "Cloudflare HTTP Response Code: $HTTP_RESPONSE"
+            cat response.txt
+            if [ "$HTTP_RESPONSE" -ge 200 ] && [ "$HTTP_RESPONSE" -lt 300 ]; then
+              echo "✅ Cloudflare Pages build successfully queued!"
+            else
+              echo "❌ Cloudflare Pages returned an error (HTTP $HTTP_RESPONSE)."
+              exit 1
+            fi
+          else
+            echo "⚠️ Secret CLOUDFLARE_PAGES_DEPLOY_HOOK is not set in GitHub repository secrets."
+            echo "Please set CLOUDFLARE_PAGES_DEPLOY_HOOK with your Cloudflare Pages Deploy Hook URL."
+            exit 1
+          fi

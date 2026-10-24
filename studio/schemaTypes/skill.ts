@@ -28,18 +28,6 @@ export const skill = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'description',
-      title: 'Brief Context / Practical Experience',
-      type: 'string',
-      description: 'e.g. Next.js 14 App Router, Server Actions, Edge runtime',
-    }),
-    defineField({
-      name: 'relatedProjects',
-      title: 'Related Projects',
-      type: 'array',
-      of: [defineArrayMember({type: 'reference', to: [{type: 'project'}]})],
-    }),
-    defineField({
       name: 'sortOrder',
       title: 'Sort Order',
       type: 'number',

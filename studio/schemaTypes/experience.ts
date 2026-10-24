@@ -60,11 +60,6 @@ export const experience = defineType({
       options: {layout: 'tags'},
     }),
     defineField({
-      name: 'supportingUrl',
-      title: 'Supporting Link / Verification',
-      type: 'url',
-    }),
-    defineField({
       name: 'sortOrder',
       title: 'Sort Order',
       type: 'number',
