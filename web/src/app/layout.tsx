@@ -136,8 +136,11 @@ export default async function RootLayout({
         jobTitle: SITE.role || SITE.roles[0] || SITE.aeo.jobTitle,
         description: SITE.seo.description,
         disambiguatingDescription: SITE.aeo.aiSummary,
+        email: SITE.email,
+        telephone: SITE.phone,
         address: {
           '@type': 'PostalAddress',
+          addressLocality: SITE.location.city,
           addressRegion: SITE.location.region,
           addressCountry: SITE.location.countryCode,
         },

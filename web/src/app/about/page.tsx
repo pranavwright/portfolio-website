@@ -6,6 +6,7 @@ import { getSkills, getExperience, getAchievements, getProfile } from '@/sanity/
 import { SanityImage } from '@/components/ui/SanityImage'
 import { PhotoGallerySection } from '@/components/about/PhotoGallerySection'
 import { urlForImage } from '@/sanity/image'
+import { formatDate } from '@/lib/utils'
 import { SITE } from '@/lib/site'
 
 export const revalidate = 60
@@ -105,7 +106,7 @@ export default async function AboutPage() {
                 <div className="md:col-span-4">
                   <p className="text-xl font-bold text-foreground">{item.organization}</p>
                   <p className="text-sm font-medium text-muted-foreground tabular mt-1">
-                    {item.startDate ? new Date(item.startDate).getFullYear() : '2023'} — {item.isCurrent ? 'Present' : item.endDate ? new Date(item.endDate).getFullYear() : 'Now'}
+                    {item.startDate ? formatDate(item.startDate) : '2023'} — {item.isCurrent ? 'Present' : item.endDate ? formatDate(item.endDate) : 'Now'}
                   </p>
                 </div>
                 <div className="md:col-span-7 md:col-start-6">
@@ -129,15 +130,15 @@ export default async function AboutPage() {
           ) : (
             <div className="border-t border-border pt-8 grid md:grid-cols-12 md:gap-8">
               <div className="md:col-span-4">
-                <p className="text-xl font-bold text-foreground">Independent Developer</p>
+                <p className="text-xl font-bold text-foreground">Kerala State Disaster Management Authority (KSDMA)</p>
                 <p className="text-sm font-medium text-muted-foreground tabular mt-1">
-                  2023 — Present
+                  May 2024 — Present
                 </p>
               </div>
               <div className="md:col-span-7 md:col-start-6">
-                <p className="text-lg font-semibold text-primary">Full-Stack &amp; Systems Architecture</p>
+                <p className="text-lg font-semibold text-primary">Team Lead &amp; Full-Stack Developer</p>
                 <p className="mt-2 text-muted-foreground text-[16px] leading-relaxed">
-                  Building distributed web applications, collaborating with teams on critical workflows, and delivering end-to-end software solutions.
+                  Leading disaster management dashboards (Subhadra), optimizing backend services with Redis and Node.js, and deploying resilient systems.
                 </p>
               </div>
             </div>

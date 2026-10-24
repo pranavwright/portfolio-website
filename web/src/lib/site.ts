@@ -16,30 +16,32 @@ export const SITE = {
   shortName: 'Pranav',
   legalName: 'Pranav P S',
   alternateNames: ['Pranav P S', 'Pranav PS', 'pranavwright', 'Pranav Wright (Pranav P S)'],
-  role: 'Full-Stack Developer & Product Builder',
+  role: 'Full-Stack Developer & Team Lead',
   roles: [
-    'Software Developer',
     'Full-Stack Developer',
+    'Team Lead',
+    'Backend Engineer',
     'Product Builder',
-    'Web Designer',
+    'Mobile Developer',
     'Technology Entrepreneur',
   ],
   headline: 'I architect scalable web systems, craft tactile user interfaces, and build fast with modern frameworks.',
-  bio: 'Software developer, full-stack engineer, and product architect from Kerala, India. Building resilient systems, distributed software, and intuitive user experiences.',
+  bio: 'Full-stack developer and team lead experienced in building scalable web and mobile applications using Node.js (Fastify/Express), React/Next.js, React Native, and MongoDB. Led backend and product strategy for RealSQ.',
 
   // URLs & Domains
   url: baseUrl,
   domain: baseUrl.replace(/^https?:\/\//, ''),
 
   // Contact & Inquiries
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'wrightpranav@gmail.com',
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'pranav@nowme.live',
+  phone: '+91 9048070151',
   contact: {
     headline: 'Have an idea worth building?',
     subtext:
       "I'm interested in building useful products, solving interesting technical problems, and collaborating with people who want to turn ideas into reality.",
   },
   location: {
-    city: 'Trivandrum',
+    city: 'Thiruvananthapuram',
     region: 'Kerala',
     country: 'India',
     countryCode: 'IN',

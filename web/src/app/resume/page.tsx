@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Download } from 'lucide-react'
 import { getExperience, getSkills, getEducation } from '@/sanity/fetch'
 import { SITE } from '@/lib/site'
+import { formatDate } from '@/lib/utils'
 
 export const revalidate = 60
 
@@ -13,23 +14,31 @@ export const metadata: Metadata = {
 
 const fallbackExperience = [
   {
-    company: 'Freelance & Independent Product Builder',
-    role: 'Full-Stack Developer & Systems Architect',
-    dates: '2023 — Present',
+    company: 'Kerala State Disaster Management Authority (KSDMA)',
+    role: 'Team Lead & Full-Stack Developer',
+    dates: 'May 2024 — Present',
     highlights: [
-      'Architected and shipped distributed web platforms with Next.js, Node.js, and PostgreSQL for clients across multiple domains.',
-      'Implemented real-time collaboration engines using CRDTs and WebSocket channels, achieving sub-50ms peer sync.',
-      'Designed responsive design systems and motion choreography with Tailwind CSS and GSAP, ensuring 60fps frame budgets.',
+      'Led development of the Subhadra disaster management dashboard using Next.js, Node.js, and MongoDB.',
+      'Optimized backend services with Redis caching, reducing API latency by 40% under peak load.',
+      'Designed real-time disaster alert mechanisms and automated deployment workflows on Docker and AWS.',
     ],
   },
   {
-    company: 'Software Engineering Practice',
-    role: 'Backend & Cloud Infrastructure Developer',
-    dates: '2022 — 2023',
+    company: 'PS Interiors',
+    role: 'Freelance Full-Stack Developer',
+    dates: 'Jul 2024 — Aug 2024',
     highlights: [
-      'Engineered high-throughput event processing microservices with Redis, Kafka, and Docker containers.',
-      'Streamlined database queries and indexing strategies, reducing median API response times from 340ms to 48ms.',
-      'Built automated CI/CD deployment pipelines on Cloudflare and Vercel with comprehensive integration testing.',
+      'Built and deployed a modern portfolio website using Next.js, Tailwind CSS, and Sanity CMS.',
+      'Integrated dynamic project galleries and client inquiry flows, increasing lead conversion by 30%.',
+    ],
+  },
+  {
+    company: 'Necttos',
+    role: 'Full-Stack Developer Intern',
+    dates: 'Mar 2024 — Jun 2024',
+    highlights: [
+      'Contributed to core product features using React, Node.js, and PostgreSQL in an agile team.',
+      'Developed reusable UI component libraries and integrated third-party payment gateways.',
     ],
   },
 ]
@@ -75,7 +84,7 @@ export default async function ResumePage() {
           company: exp.organization || 'Independent Engineering',
           role: exp.role,
           dates: exp.startDate
-            ? `${new Date(exp.startDate).getFullYear()} — ${exp.isCurrent ? 'Present' : exp.endDate ? new Date(exp.endDate).getFullYear() : 'Now'}`
+            ? `${formatDate(exp.startDate)} — ${exp.isCurrent ? 'Present' : exp.endDate ? formatDate(exp.endDate) : 'Now'}`
             : '2023 — Present',
           highlights: exp.achievements && exp.achievements.length > 0
             ? exp.achievements
@@ -198,7 +207,7 @@ export default async function ResumePage() {
                   </p>
                   <p className="text-[15px] font-medium text-primary mt-0.5">{edu.institution}</p>
                   <p className="text-[14px] text-muted-foreground mt-0.5 tabular">
-                    {edu.startDate ? new Date(edu.startDate).getFullYear() : ''} — {edu.isCurrent ? 'Present' : edu.endDate ? new Date(edu.endDate).getFullYear() : 'Completed'}
+                    {edu.startDate ? formatDate(edu.startDate) : ''} — {edu.isCurrent ? 'Present' : edu.endDate ? formatDate(edu.endDate) : 'Completed'}
                     {edu.location ? ` • ${edu.location}` : ''}
                     {edu.grade ? ` • ${edu.grade}` : ''}
                   </p>
@@ -221,12 +230,14 @@ export default async function ResumePage() {
             ) : (
               <>
                 <div className="border-t border-border pt-4">
-                  <p className="text-lg font-semibold text-foreground">Computer Science &amp; Engineering</p>
-                  <p className="text-[16px] text-muted-foreground">Kerala, India</p>
+                  <p className="text-lg font-semibold text-foreground">Bachelor of Computer Applications (BCA)</p>
+                  <p className="text-[15px] font-medium text-primary mt-0.5">St. Mary&apos;s College, Puthanangadi</p>
+                  <p className="text-[14px] text-muted-foreground mt-0.5 tabular">Jul 2021 — Mar 2024 • Kerala, India</p>
                 </div>
                 <div className="border-t border-border pt-4">
-                  <p className="text-lg font-semibold text-foreground">Autonomous Problem Solving &amp; Design</p>
-                  <p className="text-[16px] text-muted-foreground">Continuous research, open-source building, and production software delivery.</p>
+                  <p className="text-lg font-semibold text-foreground">Higher Secondary (+2) in Computer Science</p>
+                  <p className="text-[15px] font-medium text-primary mt-0.5">Govt. HSS Kulathummal</p>
+                  <p className="text-[14px] text-muted-foreground mt-0.5 tabular">Jun 2019 — Mar 2021 • Thiruvananthapuram, Kerala</p>
                 </div>
               </>
             )}

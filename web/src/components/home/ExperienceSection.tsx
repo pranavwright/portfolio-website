@@ -3,22 +3,23 @@
 import React, { useRef } from 'react'
 import { gsap, ScrollTrigger, useGSAP, motionOk } from '@/lib/gsap'
 import { Experience as SanityExperience } from '@/sanity/types'
+import { formatDate } from '@/lib/utils'
 
 const defaultExperiences = [
   {
-    company: 'Full-Stack Developer & Product Builder',
-    role: 'Autonomous Engineering & Client Systems',
-    dates: '2023 — Present',
+    company: 'Kerala State Disaster Management Authority (KSDMA)',
+    role: 'Team Lead & Full-Stack Developer',
+    dates: 'May 2024 — Present',
   },
   {
-    company: 'Lead Platform Architect',
-    role: 'Distributed Cloud Services & Microservices',
-    dates: '2022 — 2023',
+    company: 'PS Interiors',
+    role: 'Freelance Full-Stack Developer',
+    dates: 'Jul 2024 — Aug 2024',
   },
   {
-    company: 'Software Engineer',
-    role: 'Web Application Development & UI Motion',
-    dates: '2021 — 2022',
+    company: 'Necttos',
+    role: 'Full-Stack Developer Intern',
+    dates: 'Mar 2024 — Jun 2024',
   },
 ]
 
@@ -52,7 +53,7 @@ export function ExperienceSection({
           company: exp.organization || 'Independent Engineering',
           role: exp.role,
           dates: exp.startDate
-            ? `${new Date(exp.startDate).getFullYear()} — ${exp.isCurrent ? 'Present' : exp.endDate ? new Date(exp.endDate).getFullYear() : 'Now'}`
+            ? `${formatDate(exp.startDate)} — ${exp.isCurrent ? 'Present' : exp.endDate ? formatDate(exp.endDate) : 'Now'}`
             : '2023 — Present',
         }))
       : defaultExperiences
