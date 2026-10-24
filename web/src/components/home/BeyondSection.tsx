@@ -1,10 +1,11 @@
 'use client'
 
 import React, { useRef } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { gsap, useGSAP, motionOk } from '@/lib/gsap'
+import { SanityImage } from '@/components/ui/SanityImage'
+import type { SanityImage as SanityImageType } from '@/sanity/types'
 
 const interests = [
   {
@@ -25,7 +26,12 @@ const interests = [
   },
 ]
 
-export function BeyondSection() {
+interface BeyondSectionProps {
+  photo?: SanityImageType | null
+  alt?: string
+}
+
+export function BeyondSection({ photo, alt }: BeyondSectionProps = {}) {
   const root = useRef<HTMLElement>(null)
 
   useGSAP(
@@ -77,9 +83,10 @@ export function BeyondSection() {
     >
       <div className="max-w-7xl mx-auto grid gap-12 md:grid-cols-12 md:items-center md:gap-8">
         <figure className="beyond-photo relative overflow-hidden rounded-[20px] aspect-[4/3] md:col-span-5 md:w-full shadow-2xl">
-          <Image
-            src="/achivements/presentation-KSDMA.jpg"
-            alt="Pranav presenting at technical conference"
+          <SanityImage
+            image={photo}
+            fallbackSrc="/achivements/presentation-KSDMA.jpg"
+            alt={alt || photo?.alt || 'Pranav presenting at technical conference'}
             fill
             sizes="(max-width: 768px) 100vw, 42vw"
             className="beyond-photo-img object-cover object-[50%_35%]"

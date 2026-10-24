@@ -1,9 +1,11 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowUpRight } from 'lucide-react'
-import { getSkills, getExperience, getAchievements } from '@/sanity/fetch'
+import { ArrowUpRight, Calendar, MapPin } from 'lucide-react'
+import { getSkills, getExperience, getAchievements, getProfile } from '@/sanity/fetch'
+import { SanityImage } from '@/components/ui/SanityImage'
+import { urlForImage } from '@/sanity/image'
+import { formatDate } from '@/lib/utils'
 import { SITE } from '@/lib/site'
 
 export const revalidate = 60
@@ -14,13 +16,15 @@ export const metadata: Metadata = {
 }
 
 export default async function AboutPage() {
-  const [skills, experience, achievements] = await Promise.all([
+  const [skills, experience, achievements, profile] = await Promise.all([
     getSkills(),
     getExperience(),
     getAchievements(),
+    getProfile().catch(() => null),
   ])
 
   const name = SITE.name
+
 
   const storySections = [
     {
@@ -56,9 +60,10 @@ export default async function AboutPage() {
         </div>
 
         <figure className="relative aspect-[4/5] overflow-hidden rounded-[20px] md:col-span-5 shadow-2xl">
-          <Image
-            src="/pranav/about.jpg"
-            alt={name}
+          <SanityImage
+            image={profile?.aboutImage}
+            fallbackSrc="/pranav/about.jpg"
+            alt={profile?.aboutImage?.alt || name}
             fill
             sizes="(max-width: 768px) 100vw, 42vw"
             priority
@@ -181,6 +186,71 @@ export default async function AboutPage() {
         </section>
       )}
 
+      {/* Media & Moments Gallery (from Sanity CMS) */}
+      {profile?.mediaGallery && profile.mediaGallery.length > 0 && (
+        <section aria-labelledby="gallery-title" className="px-5 pt-[clamp(5rem,14vh,9rem)] md:px-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-border">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Visual Archive</p>
+              <h2 id="gallery-title" className="display text-[clamp(2.5rem,5vw,4.5rem)] text-foreground mt-2">
+                Moments & Engagements
+              </h2>
+            </div>
+            <p className="max-w-[40ch] text-[15px] leading-relaxed text-muted-foreground">
+              Documented milestones, presentations, technical talks, and engineering highlights.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {profile.mediaGallery.map((item) => (
+              <figure
+                key={item._key}
+                className="group flex flex-col overflow-hidden rounded-[20px] border border-border bg-card p-4 transition-all hover:border-foreground/30 hover:shadow-xl"
+              >
+                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[14px]">
+                  <SanityImage
+                    image={item.image}
+                    alt={item.alt || item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {item.category && (
+                    <span className="absolute top-3 left-3 rounded-full bg-background/80 backdrop-blur-md px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-foreground border border-border/50">
+                      {item.category}
+                    </span>
+                  )}
+                </div>
+                <figcaption className="mt-4 flex flex-col flex-grow">
+                  <h3 className="text-base font-bold text-foreground leading-snug">
+                    {item.title}
+                  </h3>
+                  {item.caption && (
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-grow">
+                      {item.caption}
+                    </p>
+                  )}
+                  <div className="mt-4 flex items-center gap-4 text-xs font-medium text-muted-foreground pt-3 border-t border-border/50">
+                    {item.date && (
+                      <span className="inline-flex items-center gap-1">
+                        <Calendar aria-hidden="true" className="size-3.5" />
+                        <span>{formatDate(item.date)}</span>
+                      </span>
+                    )}
+                    {item.location && (
+                      <span className="inline-flex items-center gap-1">
+                        <MapPin aria-hidden="true" className="size-3.5" />
+                        <span>{item.location}</span>
+                      </span>
+                    )}
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Short Version & Resume Callout */}
       <section className="px-5 py-[clamp(5rem,14vh,9rem)] md:px-10">
         <div className="rounded-[28px] border border-border p-8 md:p-12 flex flex-col md:flex-row md:items-center justify-between gap-8 bg-card">
@@ -201,6 +271,51 @@ export default async function AboutPage() {
         </div>
       </section>
       </div>
+
+      {/* Structured Schema.org ProfilePage JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ProfilePage',
+            '@id': `${SITE.url}/about#profilepage`,
+            url: `${SITE.url}/about`,
+            name: `About ${SITE.name}`,
+            description: profile?.bio || SITE.seo.description,
+            primaryImageOfPage: {
+              '@type': 'ImageObject',
+              url:
+                (profile?.aboutImage ? urlForImage(profile.aboutImage)?.url() : null) ||
+                `${SITE.url}/pranav/about.jpg`,
+              caption: profile?.aboutImage?.caption || `About ${SITE.name}`,
+              description: profile?.aboutImage?.alt || SITE.name,
+            },
+            mainEntity: {
+              '@type': 'Person',
+              '@id': SITE.aeo.entityId,
+              name: SITE.name,
+              jobTitle: profile?.headline || SITE.role,
+              description: profile?.bio || SITE.seo.description,
+              url: SITE.url,
+            },
+            ...(profile?.mediaGallery && profile.mediaGallery.length > 0
+              ? {
+                  hasPart: profile.mediaGallery.map((m) => ({
+                    '@type': 'ImageObject',
+                    name: m.title,
+                    caption: m.caption,
+                    description: m.alt,
+                    contentUrl: urlForImage(m.image)?.url(),
+                    datePublished: m.date,
+                    contentLocation: m.location,
+                  })),
+                }
+              : {}),
+          }),
+        }}
+      />
     </div>
   )
 }
+

@@ -59,7 +59,7 @@ export const SITE = {
     avatar: '/pranav/profile-about.jpg',
     ogImage: '/opengraph-image.png',
     favicon: '/favicon.ico',
-    resumePdf: '/pranav.pdf',
+    resumePdf: '/Pranav_PS.pdf',
     resumeFileName: 'Pranav_Wright_Resume.pdf',
   },
 

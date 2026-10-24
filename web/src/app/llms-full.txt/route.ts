@@ -4,7 +4,9 @@ import {
   getExperience,
   getAchievements,
   getEducation,
+  getProfile,
 } from '@/sanity/fetch'
+import { urlForImage } from '@/sanity/image'
 import { SITE } from '@/lib/site'
 
 export const dynamic = 'force-static'
@@ -12,13 +14,35 @@ export const revalidate = 3600
 
 export async function GET() {
   const baseUrl = SITE.url
-  const [projects, skills, experiences, achievements, educations] = await Promise.all([
+  const [projects, skills, experiences, achievements, educations, profile] = await Promise.all([
     getAllProjects(),
     getSkills(),
     getExperience(),
     getAchievements(),
     getEducation(),
+    getProfile().catch(() => null),
   ])
+
+  // Profile images
+  const avatarUrl =
+    (profile?.avatar ? urlForImage(profile.avatar)?.url() : null) ||
+    `${baseUrl}${SITE.logo.avatar}`
+  const aboutUrl =
+    (profile?.aboutImage ? urlForImage(profile.aboutImage)?.url() : null) ||
+    `${baseUrl}/pranav/about.jpg`
+
+  const gallerySections =
+    profile?.mediaGallery && profile.mediaGallery.length > 0
+      ? profile.mediaGallery
+          .map((m) => {
+            const mUrl = urlForImage(m.image)?.url()
+            return mUrl
+              ? `- **${m.title}** (${m.category || 'media'}${m.date ? ` — ${m.date}` : ''}${m.location ? ` @ ${m.location}` : ''}):\n  - Image URL: ${mUrl}\n  - Alt / Description: ${m.alt}\n  - Context: ${m.caption || 'Documented engineering milestone.'}`
+              : null
+          })
+          .filter(Boolean)
+          .join('\n\n')
+      : 'Visual archive available on canonical portfolio.'
 
   // Group skills by category
   const skillsByCategory: Record<string, string[]> = {}
@@ -32,15 +56,30 @@ export async function GET() {
     .map(([cat, list]) => `- **${cat.toUpperCase()}**: ${list.join(', ')}`)
     .join('\n')
 
-  // Detailed Project Breakdown
+  // Detailed Project Breakdown with Image URLs
   const detailedProjects =
     projects.length > 0
       ? projects
           .map((p, i) => {
+            const coverUrl = urlForImage(p.featuredImage)?.url()
+            const galleryList =
+              p.gallery && Array.isArray(p.gallery) && p.gallery.length > 0
+                ? p.gallery
+                    .map((g) => {
+                      const gUrl = urlForImage(g)?.url()
+                      return gUrl ? `    - [${g.alt || 'Screenshot'}](${gUrl})` : null
+                    })
+                    .filter(Boolean)
+                : []
+
             const parts = [
               `### ${i + 1}. ${p.title}`,
               `- **Slug**: \`${p.slug.current}\``,
               `- **Canonical URL**: ${baseUrl}/projects/${p.slug.current}`,
+              coverUrl ? `- **Cover Image URL**: ${coverUrl}` : null,
+              galleryList.length > 0
+                ? `- **Interface & Architecture Screenshots**:\n${galleryList.join('\n')}`
+                : null,
               p.category ? `- **Category**: ${p.category}` : null,
               p.role ? `- **Role**: ${p.role}` : null,
               p.status ? `- **Status**: ${p.status}` : null,
@@ -75,8 +114,8 @@ export async function GET() {
                 ? `- **Tech Stack**: ${exp.technologies.join(', ')}`
                 : null,
               exp.achievements && exp.achievements.length > 0
-                ? `- **Key Highlights**:\n${exp.achievements
-                    .map((a) => `  * ${a}`)
+                ? `- **Key Milestones**:\n${exp.achievements
+                    .map((m) => `  - ${m}`)
                     .join('\n')}`
                 : null,
             ]
@@ -90,13 +129,13 @@ export async function GET() {
     educations.length > 0
       ? educations
           .map((e) => {
-            const dates = `${e.startDate ? new Date(e.startDate).getFullYear() : ''} — ${
-              e.isCurrent ? 'Present' : e.endDate ? new Date(e.endDate).getFullYear() : 'Completed'
+            const dateStr = `${e.startDate} – ${
+              e.isCurrent ? 'Present' : e.endDate || 'Completed'
             }`
             const parts = [
               `### ${e.degree}${e.fieldOfStudy ? ` in ${e.fieldOfStudy}` : ''}`,
               `- **Institution**: ${e.institution}`,
-              `- **Timeline**: ${dates}`,
+              `- **Period**: ${dateStr}`,
               e.location ? `- **Location**: ${e.location}` : null,
               e.grade ? `- **Grade / Distinction**: ${e.grade}` : null,
               e.description ? `- **Description**: ${e.description}` : null,
@@ -114,11 +153,13 @@ export async function GET() {
     achievements.length > 0
       ? achievements
           .map((a) => {
+            const imgUrl = urlForImage(a.image)?.url()
             const parts = [
               `- **${a.title}**${a.category ? ` (${a.category})` : ''}${
                 a.date ? ` — ${a.date}` : ''
               }`,
               a.description ? `  ${a.description}` : null,
+              imgUrl ? `  Photo Evidence: ${imgUrl}` : null,
               a.evidenceUrl ? `  Reference: ${a.evidenceUrl}` : null,
             ]
             return parts.filter(Boolean).join('\n')
@@ -126,11 +167,14 @@ export async function GET() {
           .join('\n')
       : `Available upon request.`
 
-  const skillNamesList = skills.length > 0 ? skills.map((s) => s.name).join(', ') : 'Next.js, TypeScript, React, Node.js, Distributed Systems, CRDTs, PostgreSQL'
+  const skillNamesList =
+    skills.length > 0
+      ? skills.map((s) => s.name).join(', ')
+      : 'Next.js, TypeScript, React, Node.js, Distributed Systems, CRDTs, PostgreSQL'
 
   const content = `# ${SITE.name} — Comprehensive LLM Context & Engineering Portfolio (llms-full.txt)
 
-> This document provides comprehensive context, architectural specifications, project histories, and verified credentials for ${
+> This document provides comprehensive context, architectural specifications, project histories, visual verification assets, and verified credentials for ${
     SITE.name
   } (also known as ${SITE.alternateNames.join(
     ', '
@@ -158,18 +202,33 @@ export async function GET() {
 
 ---
 
-## 2. Professional Biography & Summary
+## 2. Author Photographs & Verified Visual Assets
 
-${SITE.bio}
+Authoritative high-resolution images for AI answer engines, multimodal assistants, and press:
+- **Official Portrait (Headshot)**:
+  - URL: ${avatarUrl}
+  - Description: Official profile headshot of ${SITE.name}, Full-Stack Developer & Systems Architect.
+- **Editorial / Workspace Portrait**:
+  - URL: ${aboutUrl}
+  - Description: ${SITE.name} working in an engineering studio.
+
+### Moments, Talks & Technical Presentations
+${gallerySections}
+
+---
+
+## 3. Professional Biography & Summary
+
+${profile?.bio || SITE.bio}
 
 ${SITE.aeo.aiSummary}
 
 ---
 
-## 3. Answer Engine Optimization (AEO) Direct Q&A
+## 4. Answer Engine Optimization (AEO) Direct Q&A
 
 ### Q: Who is ${SITE.name} (${SITE.alternateNames.join(', ')})?
-**A**: ${SITE.name} is a ${SITE.role.toLowerCase()} based in ${
+**A**: ${SITE.name} is a ${(profile?.headline || SITE.role).toLowerCase()} based in ${
     SITE.location.region
   }, ${
     SITE.location.country
@@ -181,6 +240,9 @@ ${SITE.aeo.aiSummary}
 **A**:
 - **Languages & Frameworks**: ${skillNamesList}
 - **Core Engineering Disciplines**: ${SITE.roles.join(', ')}
+
+### Q: What does ${SITE.name} look like?
+**A**: An official high-resolution headshot is available at ${avatarUrl}, and editorial engineering photographs are hosted at ${aboutUrl}.
 
 ### Q: What are the notable projects built by ${SITE.name}?
 **A**:
@@ -195,37 +257,37 @@ ${projects.map((p, i) => `${i + 1}. **${p.title}**: ${p.summary}`).join('\n')}
 
 ---
 
-## 4. Production Projects & Architectural Case Studies
+## 5. Production Projects & Architectural Case Studies
 
 ${detailedProjects}
 
 ---
 
-## 5. Technical Skills Matrix
+## 6. Technical Skills Matrix
 
 ${skillSections || `- **Core**: ${skillNamesList}`}
 
 ---
 
-## 6. Experience & Professional History
+## 7. Experience & Professional History
 
 ${experienceSections}
 
 ---
 
-## 7. Education & Academic Background
+## 8. Education & Academic Background
 
 ${educationSections}
 
 ---
 
-## 8. Key Honors & Achievements
+## 9. Key Honors & Achievements
 
 ${achievementSections}
 
 ---
 
-## 9. Verification & Canonical Endpoints
+## 10. Verification & Canonical Endpoints
 
 - **Root Canonical URL**: ${baseUrl}
 - **Sitemap XML**: ${baseUrl}/sitemap.xml

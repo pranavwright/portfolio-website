@@ -329,15 +329,22 @@ export default async function ProjectDetailPage({params}: ProjectPageProps) {
               return (
                 <figure
                   key={idx}
-                  className="relative aspect-[16/10] overflow-hidden rounded-[20px] shadow-2xl"
+                  className="group relative flex flex-col overflow-hidden rounded-[20px] border border-border/80 bg-card p-3 shadow-xl transition-all hover:shadow-2xl"
                 >
-                  <Image
-                    src={url}
-                    alt={img.alt || `${project.title} Screenshot ${idx + 1}`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 440px"
-                    className="object-cover"
-                  />
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-[14px]">
+                    <Image
+                      src={url}
+                      alt={img.alt || `${project.title} Screenshot ${idx + 1}`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 440px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  {(img.caption || img.alt) && (
+                    <figcaption className="mt-3 px-1 text-xs text-muted-foreground leading-relaxed">
+                      {img.caption || img.alt}
+                    </figcaption>
+                  )}
                 </figure>
               )
             })}
@@ -375,7 +382,7 @@ export default async function ProjectDetailPage({params}: ProjectPageProps) {
       </section>
       </div>
 
-      {/* Project JSON-LD Schema */}
+      {/* Project JSON-LD Schema with ImageObject */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -384,7 +391,29 @@ export default async function ProjectDetailPage({params}: ProjectPageProps) {
             '@type': 'Article',
             headline: project.title,
             description: project.summary,
-            image: featuredImageUrl ? [featuredImageUrl] : [],
+            image: featuredImageUrl
+              ? [
+                  {
+                    '@type': 'ImageObject',
+                    url: featuredImageUrl,
+                    contentUrl: featuredImageUrl,
+                    caption: project.featuredImage?.caption || `${project.title} Showcase`,
+                    description: project.featuredImage?.alt || `${project.title} Visual`,
+                  },
+                  ...(project.gallery?.map((g, i) => {
+                    const gUrl = urlForImage(g)?.url()
+                    return gUrl
+                      ? {
+                          '@type': 'ImageObject',
+                          url: gUrl,
+                          contentUrl: gUrl,
+                          caption: g.caption || `${project.title} Screenshot ${i + 1}`,
+                          description: g.alt || `${project.title} Visual`,
+                        }
+                      : null
+                  }).filter(Boolean) || []),
+                ]
+              : [],
             datePublished: project.startDate,
             dateModified: project._updatedAt || project.startDate,
             author: {

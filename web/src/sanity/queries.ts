@@ -18,6 +18,10 @@ export const allProjectsQuery = groq`
       ...,
       asset->
     },
+    gallery[] {
+      ...,
+      asset->
+    },
     technologies,
     features,
     liveUrl,
@@ -132,6 +136,92 @@ export const experienceQuery = groq`
   }
 `
 
+// Author Profile & Media
+export const profileQuery = groq`
+  *[_type == "profile" && _id == "profile"][0] {
+    _id,
+    _type,
+    fullName,
+    headline,
+    bio,
+    avatar {
+      ...,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions
+        }
+      }
+    },
+    aboutImage {
+      ...,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions
+        }
+      }
+    },
+    heroImage {
+      ...,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions
+        }
+      }
+    },
+    heroBackground {
+      ...,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions
+        }
+      }
+    },
+    socialOgImage {
+      ...,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions
+        }
+      }
+    },
+    mediaGallery[] {
+      _key,
+      title,
+      alt,
+      caption,
+      category,
+      date,
+      location,
+      image {
+        ...,
+        asset-> {
+          _id,
+          url,
+          metadata {
+            lqip,
+            dimensions
+          }
+        }
+      }
+    }
+  }
+`
+
 // Milestones & Achievements
 export const achievementsQuery = groq`
   *[_type == "achievement" && !(_id in path("drafts.**"))] | order(date desc, sortOrder asc) {
@@ -142,9 +232,21 @@ export const achievementsQuery = groq`
     date,
     description,
     evidenceUrl,
+    image {
+      ...,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions
+        }
+      }
+    },
     sortOrder
   }
 `
+
 
 // Education & Academic History
 export const educationQuery = groq`

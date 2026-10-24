@@ -43,6 +43,25 @@ export const achievement = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'image',
+      title: 'Milestone / Event Photo',
+      type: 'image',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt Text (SEO & AI Description)',
+          type: 'string',
+          description: 'Explain who and what is visible in the photo for search engines and AI.',
+        }),
+        defineField({
+          name: 'caption',
+          title: 'Caption',
+          type: 'string',
+        }),
+      ],
+    }),
+    defineField({
       name: 'sortOrder',
       title: 'Sort Order',
       type: 'number',
@@ -54,11 +73,13 @@ export const achievement = defineType({
       title: 'title',
       subtitle: 'category',
       date: 'date',
+      media: 'image',
     },
-    prepare({title, subtitle, date}) {
+    prepare({title, subtitle, date, media}) {
       return {
         title,
         subtitle: `${subtitle || ''} ${date ? `• ${date}` : ''}`,
+        media,
       }
     },
   },

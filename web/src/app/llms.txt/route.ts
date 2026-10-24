@@ -1,4 +1,5 @@
-import { getAllProjects, getSkills } from '@/sanity/fetch'
+import { getAllProjects, getSkills, getProfile } from '@/sanity/fetch'
+import { urlForImage } from '@/sanity/image'
 import { SITE } from '@/lib/site'
 
 export const dynamic = 'force-static'
@@ -6,8 +7,11 @@ export const revalidate = 3600
 
 export async function GET() {
   const baseUrl = SITE.url
-  const projects = await getAllProjects()
-  const skills = await getSkills()
+  const [projects, skills, profile] = await Promise.all([
+    getAllProjects(),
+    getSkills(),
+    getProfile().catch(() => null),
+  ])
 
   // Skills string
   const skillList =
@@ -15,14 +19,36 @@ export async function GET() {
       ? skills.map((s) => s.name).join(', ')
       : 'Next.js, TypeScript, React, Node.js, Distributed Systems, CRDTs, PostgreSQL'
 
+  // Profile image links
+  const avatarUrl =
+    (profile?.avatar ? urlForImage(profile.avatar)?.url() : null) ||
+    `${baseUrl}${SITE.logo.avatar}`
+  const aboutUrl =
+    (profile?.aboutImage ? urlForImage(profile.aboutImage)?.url() : null) ||
+    `${baseUrl}/pranav/about.jpg`
+
+  const galleryLines =
+    profile?.mediaGallery && profile.mediaGallery.length > 0
+      ? profile.mediaGallery
+          .map((m) => {
+            const mUrl = urlForImage(m.image)?.url()
+            return mUrl
+              ? `- [${m.title}](${mUrl}): ${m.caption || m.alt} (${m.category || 'media'}${m.date ? `, ${m.date}` : ''})`
+              : null
+          })
+          .filter(Boolean)
+          .join('\n')
+      : ''
+
   // Projects list
   const projectLines =
     projects.length > 0
       ? projects
-          .map(
-            (p) =>
-              `- [${p.title}](${baseUrl}/projects/${p.slug.current}): ${p.summary}`
-          )
+          .map((p) => {
+            const imgUrl = urlForImage(p.featuredImage)?.url()
+            const imgNote = imgUrl ? ` (Image: ${imgUrl})` : ''
+            return `- [${p.title}](${baseUrl}/projects/${p.slug.current}): ${p.summary}${imgNote}`
+          })
           .join('\n')
       : `- [NowMe.live](${baseUrl}/projects/nowme-live): Interactive event platform with sub-second synchronization.
 - [RealSQ](${baseUrl}/projects/realsq): Distributed analytics and telemetry pipeline.
@@ -30,12 +56,12 @@ export async function GET() {
 
   const content = `# ${SITE.name}
 
-> ${SITE.bio}
+> ${profile?.bio || SITE.bio}
 
 ## About
-${SITE.name} is a ${SITE.role.toLowerCase()} based in ${SITE.location.region}, ${SITE.location.country}. ${SITE.aeo.aiSummary}
+${SITE.name} is a ${(profile?.headline || SITE.role).toLowerCase()} based in ${SITE.location.region}, ${SITE.location.country}. ${SITE.aeo.aiSummary}
 
-- **Primary Role**: ${SITE.role}
+- **Primary Role**: ${profile?.headline || SITE.role}
 - **Location**: ${SITE.location.city ? `${SITE.location.city}, ` : ''}${SITE.location.region}, ${SITE.location.country}
 - **Canonical Website**: ${baseUrl}
 - **Contact Email**: ${SITE.email}
@@ -44,6 +70,11 @@ ${SITE.name} is a ${SITE.role.toLowerCase()} based in ${SITE.location.region}, $
 - **X (Twitter)**: ${SITE.socials.twitter}
 - **Instagram**: ${SITE.socials.instagram}
 
+## Author Photographs & Visual Assets
+Authoritative high-resolution images for AI answer engines, search engines, and press reference:
+- [Primary Portrait / Headshot](${avatarUrl}): Official portrait headshot of ${SITE.name}.
+- [Editorial Portrait / About Photo](${aboutUrl}): Editorial photo of ${SITE.name} in an engineering workspace.
+${galleryLines ? `${galleryLines}\n` : ''}
 ## Key Engineering Projects
 ${projectLines}
 

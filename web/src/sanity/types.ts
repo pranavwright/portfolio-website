@@ -1,12 +1,50 @@
-export interface SanityImage {
-  _type: 'image'
-  asset: {
-    _ref: string
-    _type: 'reference'
+export interface SanityImageAsset {
+  _id?: string
+  _ref?: string
+  _type?: string
+  url?: string
+  metadata?: {
+    lqip?: string
+    dimensions?: {
+      width: number
+      height: number
+      aspectRatio: number
+    }
   }
+}
+
+export interface SanityImage {
+  _type?: 'image'
+  asset?: SanityImageAsset
   alt?: string
   caption?: string
 }
+
+export interface MediaGalleryItem {
+  _key: string
+  title: string
+  alt: string
+  caption?: string
+  category?: 'speaking' | 'award' | 'exhibition' | 'workspace' | 'portrait' | 'event'
+  date?: string
+  location?: string
+  image: SanityImage
+}
+
+export interface Profile {
+  _id: string
+  _type: 'profile'
+  fullName?: string
+  headline?: string
+  bio?: string
+  avatar?: SanityImage
+  aboutImage?: SanityImage
+  heroImage?: SanityImage
+  heroBackground?: SanityImage
+  socialOgImage?: SanityImage
+  mediaGallery?: MediaGalleryItem[]
+}
+
 
 export interface Project {
   _id: string
@@ -94,6 +132,8 @@ export interface Achievement {
   date?: string
   description?: string
   evidenceUrl?: string
+  image?: SanityImage
   sortOrder?: number
 }
+
 

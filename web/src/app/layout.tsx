@@ -5,13 +5,25 @@ import { SiteFooter } from '@/components/layout/SiteFooter'
 import { LenisProvider } from '@/components/layout/LenisProvider'
 import { LoadingScreen } from '@/components/layout/LoadingScreen'
 import { SITE } from '@/lib/site'
-import { getSkills } from '@/sanity/fetch'
+import { getSkills, getProfile } from '@/sanity/fetch'
+import { urlForImage } from '@/sanity/image'
 
 export const revalidate = 300 // Revalidate layout every 5 minutes
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile().catch(() => null)
   const title = SITE.seo.title
-  const description = SITE.seo.description
+  const description = profile?.bio || SITE.seo.description
+
+  const ogUrl =
+    (profile?.socialOgImage ? urlForImage(profile.socialOgImage)?.width(1200).height(630).url() : null) ||
+    (profile?.avatar ? urlForImage(profile.avatar)?.width(1200).height(630).fit('crop').url() : null) ||
+    SITE.logo.ogImage
+
+  const ogAlt =
+    profile?.socialOgImage?.alt ||
+    profile?.avatar?.alt ||
+    `${SITE.name} — ${SITE.headline || SITE.role}`
 
   return {
     title: {
@@ -35,10 +47,10 @@ export function generateMetadata(): Metadata {
       siteName: SITE.seo.siteName,
       images: [
         {
-          url: SITE.logo.ogImage,
+          url: ogUrl,
           width: 1200,
           height: 630,
-          alt: `${SITE.name} — ${SITE.headline || SITE.role}`,
+          alt: ogAlt,
         },
       ],
     },
@@ -47,7 +59,7 @@ export function generateMetadata(): Metadata {
       title,
       description,
       creator: SITE.socials.twitterHandle,
-      images: [SITE.logo.ogImage],
+      images: [ogUrl],
     },
     robots: {
       index: true,
@@ -82,8 +94,32 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const sanitySkills = await getSkills()
+  const [sanitySkills, profile] = await Promise.all([
+    getSkills(),
+    getProfile().catch(() => null),
+  ])
   const skillNames = sanitySkills.map((s) => s.name)
+
+  const avatarUrl =
+    (profile?.avatar ? urlForImage(profile.avatar)?.width(1200).height(1200).fit('crop').url() : null) ||
+    `${SITE.url}${SITE.logo.avatar}`
+
+  const avatarAlt = profile?.avatar?.alt || `${SITE.name} — ${SITE.headline || SITE.role}`
+  const avatarCaption = profile?.avatar?.caption || SITE.aeo.aiSummary
+
+  const imageObject = {
+    '@type': 'ImageObject',
+    '@id': `${SITE.url}/#primaryimage`,
+    url: avatarUrl,
+    contentUrl: avatarUrl,
+    caption: avatarCaption,
+    description: avatarAlt,
+    representativeOfPage: true,
+    author: {
+      '@type': 'Person',
+      name: SITE.name,
+    },
+  }
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -98,9 +134,9 @@ export default async function RootLayout({
         legalName: SITE.legalName,
         alternateName: [...SITE.alternateNames],
         url: SITE.url,
-        image: `${SITE.url}${SITE.logo.avatar}`,
-        jobTitle: SITE.roles[0] || SITE.aeo.jobTitle,
-        description: SITE.seo.description,
+        image: imageObject,
+        jobTitle: profile?.headline || SITE.roles[0] || SITE.aeo.jobTitle,
+        description: profile?.bio || SITE.seo.description,
         disambiguatingDescription: SITE.aeo.aiSummary,
         address: {
           '@type': 'PostalAddress',
@@ -120,6 +156,9 @@ export default async function RootLayout({
         '@id': `${SITE.url}/#profilepage`,
         url: SITE.url,
         name: `${SITE.name} — Developer Profile`,
+        primaryImageOfPage: {
+          '@id': `${SITE.url}/#primaryimage`,
+        },
         mainEntity: {
           '@id': SITE.aeo.entityId,
         },
@@ -129,7 +168,7 @@ export default async function RootLayout({
         '@id': SITE.aeo.websiteId,
         url: SITE.url,
         name: `${SITE.name} Portfolio`,
-        description: SITE.seo.description,
+        description: profile?.bio || SITE.seo.description,
         inLanguage: 'en-US',
         publisher: {
           '@id': SITE.aeo.entityId,
@@ -137,6 +176,7 @@ export default async function RootLayout({
       },
     ],
   }
+
 
   return (
     <html lang="en" data-theme="light">

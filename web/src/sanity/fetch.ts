@@ -9,6 +9,7 @@ import {
   achievementsQuery,
   currentlyBuildingProjectsQuery,
   projectSlugsQuery,
+  profileQuery,
 } from './queries'
 import type {
   Project,
@@ -16,9 +17,20 @@ import type {
   Experience,
   Education,
   Achievement,
+  Profile,
 } from './types'
 
+export async function getProfile(): Promise<Profile | null> {
+  try {
+    return await client.fetch<Profile | null>(profileQuery)
+  } catch (err) {
+    console.error('Error fetching profile:', err)
+    return null
+  }
+}
+
 export async function getAllProjects(): Promise<Project[]> {
+
   try {
     return await client.fetch<Project[]>(allProjectsQuery)
   } catch (err) {
