@@ -8,8 +8,6 @@ import { SITE } from '@/lib/site'
 import { getSkills, getProfile } from '@/sanity/fetch'
 import { urlForImage } from '@/sanity/image'
 
-export const revalidate = 300 // Revalidate layout every 5 minutes
-
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile().catch(() => null)
   const title = SITE.seo.title
@@ -80,7 +78,6 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
       shortcut: SITE.logo.favicon,
     },
-    manifest: '/site.webmanifest',
     verification: {
       google: SITE.seo.googleVerification,
     },

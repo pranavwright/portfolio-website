@@ -3,7 +3,7 @@
 import React, { useRef } from 'react'
 import { gsap, ScrollTrigger, useGSAP, motionOk } from '@/lib/gsap'
 import { Experience as SanityExperience } from '@/sanity/types'
-import { formatDate } from '@/lib/utils'
+import { formatDateRange } from '@/lib/utils'
 
 const defaultExperiences = [
   {
@@ -52,9 +52,7 @@ export function ExperienceSection({
       ? sanityExperience.map((exp) => ({
           company: exp.organization || 'Independent Engineering',
           role: exp.role,
-          dates: exp.startDate
-            ? `${formatDate(exp.startDate)} — ${exp.isCurrent ? 'Present' : exp.endDate ? formatDate(exp.endDate) : 'Now'}`
-            : '2023 — Present',
+          dates: formatDateRange(exp.startDate, exp.endDate, exp.isCurrent),
         }))
       : defaultExperiences
 
@@ -122,24 +120,24 @@ export function ExperienceSection({
       aria-labelledby="experience-title"
       className="overflow-hidden py-[clamp(6rem,16vh,11rem)]"
     >
-      <div className="max-w-7xl mx-auto grid gap-10 px-5 md:grid-cols-12 md:px-10">
-        <div className="md:col-span-4">
-          <h2 id="experience-title" className="display text-[clamp(2.75rem,5.4vw,5.5rem)]">
+      <div className="max-w-7xl mx-auto grid gap-10 px-5 lg:grid-cols-12 lg:gap-14 xl:gap-20 md:px-10">
+        <div className="lg:col-span-4">
+          <h2 id="experience-title" className="display text-[clamp(2.5rem,4.2vw,3.75rem)] leading-[0.95] text-foreground">
             Experience
           </h2>
-          <p className="mt-5 max-w-[30ch] text-[17px] leading-relaxed text-muted-foreground">
+          <p className="mt-5 max-w-[32ch] text-[17px] leading-relaxed text-muted-foreground">
             Years of delivering reliable full-stack applications, scalable backend microservices, and
             polished user interfaces.
           </p>
         </div>
 
-        <ol className="jobs md:col-span-8 md:col-start-5">
+        <ol className="jobs lg:col-span-8 border-t border-border">
           {experiences.map((job) => (
             <li
               key={job.company}
-              className="job grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 border-b border-border py-7 first:pt-0 md:grid-cols-[1.3fr_1fr_auto]"
+              className="job grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 border-b border-border py-7 md:grid-cols-[1.3fr_1fr_auto]"
             >
-              <p className="text-[clamp(1.5rem,2.5vw,2.5rem)] font-bold leading-tight tracking-[-0.035em] [font-stretch:108%] text-foreground">
+              <p className="text-[clamp(1.5rem,2.2vw,2.25rem)] font-bold leading-tight tracking-[-0.035em] [font-stretch:108%] text-foreground">
                 {job.company}
               </p>
               <p className="tabular text-[15px] font-medium text-muted-foreground md:order-last">

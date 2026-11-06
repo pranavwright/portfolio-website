@@ -2,8 +2,6 @@ import {MetadataRoute} from 'next'
 import {getAllProjects} from '@/sanity/fetch'
 import {SITE} from '@/lib/site'
 
-export const revalidate = 3600 // Revalidate sitemap every hour
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE.url
   let projectRoutes: MetadataRoute.Sitemap = []

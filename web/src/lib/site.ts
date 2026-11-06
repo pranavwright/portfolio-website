@@ -8,7 +8,17 @@
  * will automatically update.
  */
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || ''
+/**
+ * Canonical site URL.
+ *
+ * Production sets NEXT_PUBLIC_SITE_URL to the live domain. When the env var is
+ * absent (local dev, CI, fresh clones) we fall back to the Cloudflare Pages
+ * deploy domain so the build never crashes on `new URL('')` and all canonical
+ * URLs / JSON-LD @ids resolve to a valid absolute URL.
+ */
+const FALLBACK_SITE_URL = 'https://pranavwright.pages.dev'
+
+const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || FALLBACK_SITE_URL).replace(/\/$/, '')
 
 export const SITE = {
   // Core Identity

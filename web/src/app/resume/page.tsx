@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Download } from 'lucide-react'
 import { getExperience, getSkills, getEducation } from '@/sanity/fetch'
 import { SITE } from '@/lib/site'
-import { formatDate } from '@/lib/utils'
+import { formatDate, formatDateRange } from '@/lib/utils'
 
 export const revalidate = 60
 
@@ -83,9 +83,7 @@ export default async function ResumePage() {
       ? sanityExp.map((exp) => ({
           company: exp.organization || 'Independent Engineering',
           role: exp.role,
-          dates: exp.startDate
-            ? `${formatDate(exp.startDate)} — ${exp.isCurrent ? 'Present' : exp.endDate ? formatDate(exp.endDate) : 'Now'}`
-            : '2023 — Present',
+          dates: formatDateRange(exp.startDate, exp.endDate, exp.isCurrent),
           highlights: exp.achievements && exp.achievements.length > 0
             ? exp.achievements
             : exp.description
@@ -207,7 +205,7 @@ export default async function ResumePage() {
                   </p>
                   <p className="text-[15px] font-medium text-primary mt-0.5">{edu.institution}</p>
                   <p className="text-[14px] text-muted-foreground mt-0.5 tabular">
-                    {edu.startDate ? formatDate(edu.startDate) : ''} — {edu.isCurrent ? 'Present' : edu.endDate ? formatDate(edu.endDate) : 'Completed'}
+                    {formatDateRange(edu.startDate, edu.endDate, edu.isCurrent)}
                     {edu.location ? ` • ${edu.location}` : ''}
                     {edu.grade ? ` • ${edu.grade}` : ''}
                   </p>

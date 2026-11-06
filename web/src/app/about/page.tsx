@@ -6,7 +6,7 @@ import { getSkills, getExperience, getAchievements, getProfile } from '@/sanity/
 import { SanityImage } from '@/components/ui/SanityImage'
 import { PhotoGallerySection } from '@/components/about/PhotoGallerySection'
 import { urlForImage } from '@/sanity/image'
-import { formatDate } from '@/lib/utils'
+import { formatDate, formatDateRange } from '@/lib/utils'
 import { SITE } from '@/lib/site'
 
 export const revalidate = 60
@@ -106,7 +106,7 @@ export default async function AboutPage() {
                 <div className="md:col-span-4">
                   <p className="text-xl font-bold text-foreground">{item.organization}</p>
                   <p className="text-sm font-medium text-muted-foreground tabular mt-1">
-                    {item.startDate ? formatDate(item.startDate) : '2023'} — {item.isCurrent ? 'Present' : item.endDate ? formatDate(item.endDate) : 'Now'}
+                    {formatDateRange(item.startDate, item.endDate, item.isCurrent)}
                   </p>
                 </div>
                 <div className="md:col-span-7 md:col-start-6">
